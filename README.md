@@ -1,13 +1,6 @@
 # robotcode2015bot_ball
-2015 bot_ball code
 
-Henry was here
-
-Howard was here
-
-MF is the best right now
-
-
+                                        2015 bot_ball code for Team 15-0636
 
 Manan's descriptioin:
 Robot Code for the 2014 competition.
