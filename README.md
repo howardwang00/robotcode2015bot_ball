@@ -11,5 +11,5 @@ Robot Code for the 2014 competition.
 How to Contribute
 
     Check the Issues Section: choose a pending task that hasn't yet been completed and help us add that functionality to the schedule
-    Fork this Repository: fork either the main or development branches to your account (if you're not currently a contributor) and make proposed changes
+    If you're not currently a contributor: Fork this Repository: fork either the main or development branches to your account  and make proposed changes
     Send a Pull Request: we'll review the changes and merge them if applicable
