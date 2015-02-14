@@ -15,6 +15,3 @@ How to Contribute
     Send a Pull Request: we'll review the changes and merge them if applicable
 =======
 2015 bot_ball code
-Henry was here
-Howard was here
-hi
