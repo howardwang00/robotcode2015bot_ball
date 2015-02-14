@@ -3,10 +3,10 @@
                                         2015 bot_ball code for Team 15-0636
 
 Manan's descriptioin:
-Robot Code for the 2014 competition.
+Robot Code for the 2015 competition.
 
-    The Regionals 2014 folder stores our code for the Regional Competition
-    The GCER 2014 folder stores our code for this year's Global Conference in Educational Robotics
+    The Regionals 2015 folder stores our code for the Regional Competition
+    The GCER 2015 folder stores our code for this year's Global Conference in Educational Robotics
 
 How to Contribute
 
@@ -15,6 +15,7 @@ How to Contribute
     Send a Pull Request: we'll review the changes and merge them if applicable
 =======
 2015 bot_ball code
+
 Hey everyone! This is Nikko  XD
 
 Tip: This code can still be viewed by typing 'bot ball' in the search
