@@ -18,3 +18,5 @@ How to Contribute
 Hey everyone! This is Nikko  XD
 
 Tip: This code can still be viewed by typing 'bot ball' in the search
+
+Noah was here!
