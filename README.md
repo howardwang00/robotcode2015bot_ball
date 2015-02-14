@@ -1,5 +1,4 @@
 # robotcode2015bot_ball
-<<<<<<< HEAD
 
                                         2015 bot_ball code for Team 15-0636
 
@@ -18,3 +17,4 @@ How to Contribute
 2015 bot_ball code
 Henry was here
 Howard was here
+hi
