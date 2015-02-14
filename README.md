@@ -1,4 +1,5 @@
 # robotcode2015bot_ball
+<<<<<<< HEAD
 
                                         2015 bot_ball code for Team 15-0636
 
@@ -13,3 +14,8 @@ How to Contribute
     Check the Issues Section: choose a pending task that hasn't yet been completed and help us add that functionality to the schedule
     If you're not currently a contributor: Fork this Repository: fork either the main or development branches to your account  and make proposed changes
     Send a Pull Request: we'll review the changes and merge them if applicable
+=======
+2015 bot_ball code
+Henry was here
+Howard was here
+>>>>>>> parent of 07e86cd... Updated best champion
