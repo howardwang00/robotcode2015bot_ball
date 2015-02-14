@@ -16,3 +16,5 @@ How to Contribute
 =======
 2015 bot_ball code
 Hey everyone! This is Nikko  XD
+
+Tip: This code can still be viewed by typing 'bot ball' in the search
