@@ -18,4 +18,3 @@ How to Contribute
 2015 bot_ball code
 Henry was here
 Howard was here
->>>>>>> parent of 07e86cd... Updated best champion
