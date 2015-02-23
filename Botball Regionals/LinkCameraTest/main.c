@@ -40,7 +40,7 @@ void cam_sort(int mainColor,int size,int discrepancy,int time)
 	camera_update();
 	float startTime = curr_time();
 	int area = 0;
-	while(startTime+time>=curr_time())
+	while(startTime+time>=curr_time())	//Timekeeper
 	{
 		camera_update();
 		area = get_object_area(mainColor,0);
