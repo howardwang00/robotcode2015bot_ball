@@ -35,9 +35,7 @@ time: the duration for which this program runs
 */
 void cam_sort(int mainColor, int size, int discrepancy, int time)
 {
-	camera_update();
-	camera_update();
-	camera_update();
+	multicamupdate(3);
 	float startTime = curr_time();
 	int area = 0;
 	while(startTime+time>=curr_time())	//Timekeeper
@@ -45,9 +43,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time)
 		camera_update();
 		area = get_object_area(mainColor,0);
 		if(area>=size-discrepancy&&area<=size+discrepancy)
-		{
 			sort_main();
-		}
 		else
 			sort_sec();
 	}

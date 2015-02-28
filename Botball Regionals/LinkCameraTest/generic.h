@@ -31,6 +31,7 @@ void servo_set(int port,int end,float time);//,float increment)
 int cam_area(int channel);//returns largest blob in channel, or 0 if none
 void update_wait();
 void next(int State);
+void multicamupdate(int reps);
 
 //State system
 int currstate;
