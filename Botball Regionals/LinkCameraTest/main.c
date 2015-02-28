@@ -33,7 +33,7 @@ size: the average size of tribbles on the camera
 discrepancy: the maximum discrepancy from the main size allowed
 time: the duration for which this program runs
 */
-void cam_sort(int mainColor,int size,int discrepancy,int time)
+void cam_sort(int mainColor, int size, int discrepancy, int time)
 {
 	camera_update();
 	camera_update();
