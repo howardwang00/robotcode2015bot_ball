@@ -15,14 +15,24 @@
 #define claw_hold_cubes ?
 #define claw_open_regular ?
 
-
-
-int main()
+void start(int light_start_sensor)
 {
 	light_start(light_start_sensor);
 	shut_down_in(119.5); // Time is 120 seconds, but it needs to shut down a bit earlier
 	enable_servos();
+}
+
+void start(int light_start_sensor);
+
+int main()
+{
+	/*
+	light_start(light_start_sensor);
+	shut_down_in(119.5); // Time is 120 seconds, but it needs to shut down a bit earlier
+	enable_servos();
 	//put cubes sideways in the middle of tape, facing Create
+	*/
+	start(light_start_sensor);
 	
 	set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
 	create_right(30, 0, 100); //turn to face cubes
