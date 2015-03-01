@@ -136,7 +136,8 @@ void servo_set(int port,int end,float time)//,float increment)
 //camera stuff
 void multicamupdate(int reps)
 {
-	for(int i = 0;i<reps;i++)
+	int i;
+	for(i = 0;i<reps;i++)
 		camera_update();
 }
 int cam_area(int channel){//returns largest blob in channel, or 0 if none
