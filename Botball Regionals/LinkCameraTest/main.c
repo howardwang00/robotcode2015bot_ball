@@ -35,13 +35,18 @@ time: the duration for which this program runs
 */
 void cam_sort(int mainColor, int size, int discrepancy, int time)
 {
-	multicamupdate(3);
+	printf("blah1");
+	camera_update();
+	printf("blah");
 	float startTime = curr_time();
+	printf("blah");
 	int area = 0;
 	while(startTime+time>=curr_time())	//Timekeeper
 	{
 		camera_update();
+		printf("works pre-check");
 		area = get_object_area(mainColor,0);
+		printf("the check works");
 		if(area>=size-discrepancy&&area<=size+discrepancy)
 			sort_main();
 		else
@@ -50,16 +55,15 @@ void cam_sort(int mainColor, int size, int discrepancy, int time)
 }
 int main()
 {
+	camera_open_device(1,LOW_RES);
 	enable_servos();
-	//motor(MOT_PICK,100);
+	motor(MOT_PICK,100);
 	//msleep(100000);
 	printf("test1");
-	//cam_sort(0,1000,100,10);
-	camera_update();
+	cam_sort(0,1000,100,10);
 	msleep(1000);
 	printf("test2");
-
-	printf("test3");
+	msleep(1000);
 	disable_servos();
 	return 0;
 }
