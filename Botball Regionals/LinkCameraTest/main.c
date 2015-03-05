@@ -55,7 +55,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time)
 }
 int main()
 {
-	camera_open_device(1,LOW_RES);
+	camera_open(LOW_RES);
 	enable_servos();
 	motor(MOT_PICK,100);
 	//msleep(100000);
