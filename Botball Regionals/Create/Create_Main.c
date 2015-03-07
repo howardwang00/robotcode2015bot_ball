@@ -1,28 +1,24 @@
 // Created on Fri February 6 2015 by: Howard Wang
-//
 
 
 #include "createDrive.h"
 #include "generic.h"
 
-#define light_start_sensor ?
-#define main_arm_servo 1
+#define light_start_sensor 2 //random #, change later
+#define main_arm_servo 3
 #define claw_servo 2
 
-#define main_arm_up ?
-#define main_arm_mid ?
-#define main_arm_down ?
-#define claw_hold_cubes ?
-#define claw_open_regular ?
 
-void start(int light_start_sensor)
-{
-	light_start(light_start_sensor);
-	shut_down_in(119.5); // Time is 120 seconds, but it needs to shut down a bit earlier
-	enable_servos();
-}
+#define main_arm_up 1475	//on top of mesa
+#define main_arm_mid 1000	//driving
+#define main_arm_down 835	//picking up cubes
+#define claw_hold_cubes 234	//need value
+#define claw_open_regular 234	//need value
 
-void start(int light_start_sensor);
+
+void start(int light_start_port_for_function_start);
+
+
 
 int main()
 {
@@ -57,4 +53,12 @@ int main()
 }
 
 
+
+void start(int light_start_port_for_function_start)
+{
+	int light_start_port_for_function_start;
+	light_start(light_start_sensor_function_start);
+	shut_down_in(119.5); // Time is 120 seconds, but it needs to shut down a bit earlier
+	enable_servos();
+}
 
