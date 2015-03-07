@@ -33,7 +33,7 @@ int main()
 	
 	set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
 	msleep(100);
-	create_right(30, 0, 100); //turn to face cubes
+	create_left(30, 0, 100); //turn to face cubes
 	set_servo_position(main_arm_servo, main_arm_down);
 	msleep(200);
 	set_servo_position(claw_servo, claw_hold_cubes);
@@ -51,6 +51,7 @@ int main()
 	
 	
 	disable_servos();
+	create_disconnect();
 	return 0;
 }
 
@@ -61,5 +62,6 @@ void start_function(int light_start_port_for_function_start)
 	//light_start(light_start_port_for_function_start);
 	shut_down_in(119.5); // Time is 120 seconds, but it needs to shut down a bit earlier
 	enable_servos();
+	create_connect();
 }
 
