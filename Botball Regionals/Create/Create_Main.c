@@ -25,11 +25,16 @@ int main()
 {
 	start_function(light_start_sensor);
 	
+	
 	set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
 	msleep(100);
-	create_left(30, 0, 100); //turn to face cubes
-	set_servo_position(main_arm_servo, main_arm_down);
+	//create_left(30, 0, 100); //turn to face cubes
+	create_drive_direct_left(30, -30, 30);
+	create_block();
+	set_servo_position(main_arm_servo, main_arm_down+30);
 	msleep(200);
+	set_servo_position(main_arm_servo, main_arm_down);
+	msleep(300);
 	set_servo_position(claw_servo, claw_hold_cubes);
 	msleep(100);
 	set_servo_position(main_arm_servo, main_arm_up);
