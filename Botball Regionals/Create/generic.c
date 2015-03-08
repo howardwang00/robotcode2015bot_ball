@@ -1,5 +1,6 @@
 #include "generic.h"
 //UTILITY
+/*
 float bound(float num, float max)
 {
 	if (num > max)
@@ -16,6 +17,7 @@ int in_range(int input, int wanted, int fudge)
 	else
 	return 0;
 }
+*/
 float ET_distance(int X){
 	//{3674186.332167,176.997129,-26294.871673,9.384503}
 	//return sqrt(in.a/(X-in.d)-in.c)-in.b;
