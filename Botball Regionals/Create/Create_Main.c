@@ -17,18 +17,12 @@
 #define claw_hold_botguy 340	//holding botguy
 #define claw_hold_pod 400	//holding pod
 
-void start_function(int light_start_port_for_function_start);
+void start_function(int light_start_port_for_function_start); //function to start the robot
 
 
 
 int main()
 {
-	/*
-	light_start(light_start_sensor);
-	shut_down_in(119.5); // Time is 120 seconds, but it needs to shut down a bit earlier
-	enable_servos();
-	//put cubes sideways in the middle of tape, facing Create
-	*/
 	start_function(light_start_sensor);
 	
 	set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
@@ -57,11 +51,10 @@ int main()
 
 
 
-void start_function(int light_start_port_for_function_start)
+void start_function(int light_start_port)
 {
-	//light_start(light_start_port_for_function_start);
+	//light_start(light_start_port_or_function_start);
 	shut_down_in(119.5); // Time is 120 seconds, but it needs to shut down a bit earlier
 	enable_servos();
 	create_connect();
 }
-
