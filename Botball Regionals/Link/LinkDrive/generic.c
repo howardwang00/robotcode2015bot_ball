@@ -1,4 +1,5 @@
 #include "generic.h"
+#include <math.h>
 //UTILITY
 float bound(float num, float max)
 {

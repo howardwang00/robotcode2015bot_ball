@@ -1,5 +1,6 @@
 #include "drive.h"
 #include "generic.h"
+#include "newmenu.h"
 int main()
 {
 	forward(120);
