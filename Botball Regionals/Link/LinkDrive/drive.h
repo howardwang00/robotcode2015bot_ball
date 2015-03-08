@@ -7,11 +7,11 @@
 
 //primary driving code
 #define MOT_LEFT 0//Polyp edition! Unique to each robot
-#define MOT_RIGHT 3 //Unique to each robot
+#define MOT_RIGHT 2 //Unique to each robot
 #define PI 3.14159265358979
 
 #define SPD 100//turning
-#define SPDl 100.//left forward
+#define SPDl 90.//left forward
 #define SPDr 100.//right forward
 #define rdistmult 1.0
 #define SPDlb 100.//left backward

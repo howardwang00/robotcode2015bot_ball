@@ -20,10 +20,10 @@ Value:
 #define GREEN_START 1
 //Servos and Motors
 #define SERV_SORT 0
-#define MOT_PICK 0
+#define MOT_PICK 3
 //Position Functions
-void sort_main(){set_servo_position(SERV_SORT,1833);msleep(500);}
-void sort_sec(){set_servo_position(SERV_SORT,640);msleep(500);}
+void sort_main(){set_servo_position(SERV_SORT,1500);msleep(500);}
+void sort_sec(){set_servo_position(SERV_SORT,833);msleep(500);}
 
 /*
 sorts the poms into their respective bins for time seconds
@@ -54,10 +54,12 @@ void cam_sort(int mainColor, int size, int discrepancy, int time)
 }
 int main()
 {
+	motor(0,40);
+	motor(2,40);
 	camera_open(LOW_RES);
 	enable_servos();
 	motor(MOT_PICK,100);
-	cam_sort(0,1000,100,10);
+	cam_sort(0,1000,100,30);
 	msleep(1000);
 	disable_servos();
 	return 0;
