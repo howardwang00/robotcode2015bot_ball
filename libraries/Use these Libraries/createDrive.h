@@ -2,7 +2,8 @@
 #ifndef _FINALCREATE
 #define _FINALCREATE
 
-/*#define SERV_CREATEPOWER 3
+/*
+#define SERV_CREATEPOWER 3
 #define CREATE_POWERPRESS(); {enable_servo(SERV_CREATEPOWER);set_servo_position(SERV_CREATEPOWER,down);}
 #define CREATE_POWERUNPRESS(); {set_servo_position(SERV_CREATEPOWER,up);}*/
 
