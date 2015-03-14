@@ -5,9 +5,9 @@
 #define RIGHT_BUMP digital(15)
 #define SERV_SORT 0
 #define MOT_PICK 1
-void sort_main(){set_servo_position(SERV_SORT,1400);msleep(300);}
-void sort_sec(){set_servo_position(SERV_SORT,780);msleep(300);}
-void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(300);}
+void sort_main(){set_servo_position(SERV_SORT,1500);msleep(200);}
+void sort_sec(){set_servo_position(SERV_SORT,780);msleep(200);}
+void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
 void squareup(int max_time)
 {
 	float start_time = curr_time();
@@ -29,7 +29,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time)
 	multicamupdate(5);
 	float startTime = curr_time();
 	int area = 0;
-	motor(MOT_PICK,80);
+	motor(MOT_PICK,65);
 	while(startTime+time>=curr_time())	//Timekeeper
 	{
 		camera_update();
