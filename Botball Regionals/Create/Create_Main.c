@@ -28,8 +28,9 @@ int main()
 	
 	set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
 	msleep(100);
-	//create_left(30, 0, 100); //turn to face cubes
-	create_drive_direct_left(30, -30, 30);
+	create_left(30, 0, 100); //turn to face cubes
+	/*create_drive_direct_left(30, -30, 30);
+	
 	create_block();
 	set_servo_position(main_arm_servo, main_arm_down+30);
 	msleep(200);
@@ -48,7 +49,7 @@ int main()
 	
 	set_servo_position(claw_servo, claw_open_regular); //drop cubes
 	
-	
+	*/
 	disable_servos();
 	create_disconnect();
 	return 0;
