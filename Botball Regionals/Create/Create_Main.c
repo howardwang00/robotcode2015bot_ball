@@ -29,7 +29,9 @@ int main()
 	set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
 	msleep(100);
 	create_drive_direct_dist(-10, -10, 10);
+	create_stop();
 	msleep(500);
+	
 	create_left(30, 0, 100); //turn to face cubes
 	
 	/*
@@ -43,16 +45,17 @@ int main()
 	msleep(20000); // wait 20 seconds for Link to pass
 	*/
 	
-	create_drive_direct_dist(-100, -100, 100);
+	/*create_drive_direct_dist(-100, -100, 100);
 	msleep(100);
 	create_drive_direct_dist(-30, -30, 100); //go slower for the rest of the way
 	msleep(300);
+	*/
 	
 	//set_servo_position(claw_servo, claw_open_regular); //drop cubes
 	
 	
 	disable_servos();
-	create
+	//create_stop();
 	create_disconnect();
 	return 0;
 }
