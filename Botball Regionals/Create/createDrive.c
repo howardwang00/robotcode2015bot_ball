@@ -128,7 +128,7 @@ void create_recieve(){
 }
 
 // blocks program until create finishes
-void create_block()
+void create_block() // bug with create_block
 {
 	create_stop();
 	create_send();
