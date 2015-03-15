@@ -25,10 +25,11 @@ int main()
 {
 	start_function(light_start_sensor);
 	
-	create_move_forward(100, 100, 300);
+	create_move(-100, -100, 300);
 	
 	create_stop();
 	
+	create_move(-100, 100, 300);
 	
 	//set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
 	//msleep(100);
@@ -79,7 +80,7 @@ void start_function(int light_start_port)
 void create_move(int left_power, int right_power, int mm) {
 	create_drive_direct(right_power, left_power);
 	set_create_distance(0);
-	while(get_create_distance() < mm+1) {
+	while(get_create_distance() < mm) {
 		msleep(1);
 	}
 }
