@@ -19,21 +19,26 @@
 
 void start_function(int light_start_port_for_function_start); //function to start the robot
 
-
+void create_move_forward(int left_power, int right_power, int mm);
 
 int main()
 {
 	start_function(light_start_sensor);
 	
+	create_move_forward(100, 100, 300);
 	
-	set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
-	msleep(100);
-	create_drive_direct_dist(-10, -10, 10);
 	create_stop();
-	msleep(500);
 	
-	create_left(30, 0, 100); //turn to face cubes
 	
+	//set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
+	//msleep(100);
+	//create_drive_direct_dist(-10, -10, 10);
+	//msleep(60000);
+	//create_stop();
+	//msleep(500);
+	
+	//create_left(10, 0, 100); //turn to face cubes
+	//msleep(10000);
 	/*
 	set_servo_position(main_arm_servo, main_arm_down+30);
 	msleep(200);
@@ -69,3 +74,15 @@ void start_function(int light_start_port)
 	enable_servos();
 	create_connect();
 }
+
+
+void create_move_forward(int left_power, int right_power, int mm) {
+	create_drive_direct(right_power, left_power);
+	set_create_distance(0);
+	while(get_create_distance() < mm+1) {
+		msleep(1);
+	}
+}
+
+
+
