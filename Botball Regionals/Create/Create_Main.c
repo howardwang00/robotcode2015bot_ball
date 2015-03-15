@@ -19,7 +19,7 @@
 
 void start_function(int light_start_port_for_function_start); //function to start the robot
 
-void create_move_forward(int left_power, int right_power, int mm);
+void create_move_straight(int left_power, int right_power, int mm);
 
 int main()
 {
@@ -76,7 +76,7 @@ void start_function(int light_start_port)
 }
 
 
-void create_move_forward(int left_power, int right_power, int mm) {
+void create_move_straight(int left_power, int right_power, int mm) {
 	create_drive_direct(right_power, left_power);
 	set_create_distance(0);
 	while(get_create_distance() < mm+1) {
