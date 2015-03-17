@@ -5,6 +5,8 @@
 #define RIGHT_BUMP digital(15)
 #define SERV_SORT 0
 #define MOT_PICK 1
+#define CAM_RES LOW_RES
+
 void sort_main(){set_servo_position(SERV_SORT,1500);msleep(200);}
 void sort_sec(){set_servo_position(SERV_SORT,780);msleep(200);}
 void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
@@ -26,6 +28,12 @@ void squareup(int max_time)
 }
 void cam_sort(int mainColor, int size, int discrepancy, int time)
 {
+	switch(CAM_RES)
+	{
+		case LOW_RES:
+			multicamupdate(5);
+		break;
+	}
 	multicamupdate(5);
 	float startTime = curr_time();
 	int area = 0;
@@ -33,13 +41,13 @@ void cam_sort(int mainColor, int size, int discrepancy, int time)
 	while(startTime+time>=curr_time())	//Timekeeper
 	{
 		camera_update();
-		int sorted_color;
+		//int sorted_color;
 		area = get_object_area(mainColor,0);
 		if(area>500)
 		{
 			printf("Seen Main Blob\n");
 			//motor(MOT_PICK,0);
-			sorted_color = 0;
+			//sorted_color = 0;
 			if(area>=size-discrepancy&&area<=size+discrepancy)
 				sort_main();
 		}
@@ -51,7 +59,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time)
 			printf("Seen Sec Blob\n");
 			//	motor(MOT_PICK,0);
 			}
-			sorted_color = 1;
+			//sorted_color = 1;
 			if(area>=size-discrepancy&&area<=size+discrepancy)
 				sort_sec();
 		}
@@ -65,7 +73,7 @@ int main2()
 }
 int main()
 {
-	camera_open(LOW_RES);
+	camera_open(CAM_RES);
 	enable_servos();
 	motor(MOT_LEFT,15);
 	motor(MOT_RIGHT,35);
@@ -91,4 +99,5 @@ int main3()
 	forward(30);
 	right(90,0);
 	forward(100);
+	return 0;
 }
