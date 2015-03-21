@@ -44,8 +44,6 @@ int main()
 	start_function(light_start_sensor);
 	
 	
-	
-	
 	create_arm(main_arm_mid); //move arm to a higher position than cubes
 	msleep(100);
 	create_drive_direct_dist(-10, -10, 10);	//get off the wall
