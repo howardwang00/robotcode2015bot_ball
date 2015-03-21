@@ -13,7 +13,7 @@
 #define main_arm_up_servo_1 1475	//on top of mesa
 #define main_arm_mid_servo_1 1000	//position of arm when driving
 #define main_arm_down_servo_1 835	//picking up cubes
-#define main_arm_up_servo_2 1600
+#define main_arm_up_servo_2 1700
 #define main_arm_mid_servo_2 1225
 #define main_arm_down_servo_2 1060
 
@@ -22,6 +22,7 @@
 #define claw_hold_botguy 340	//holding botguy
 #define claw_hold_pod 400	//holding pod
 
+
 void start_function(int light_start_port_for_function_start); //function to start the robot
 
 void create_move(int left_power, int right_power, int mm);
@@ -29,6 +30,11 @@ void create_move(int left_power, int right_power, int mm);
 void create_turn_CW(int speed, int degrees);
 
 void create_turn_CCW(int speed, int degrees);
+
+void create_arm(int position_of_servo1);
+
+
+
 
 
 //#define MAIN
@@ -40,7 +46,7 @@ int main()
 	
 	
 	/*
-	set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
+	create_arm(main_arm_mid); //move arm to a higher position than cubes
 	msleep(100);
 	create_drive_direct_dist(-10, -10, 10);	//get off the wall
 	create_block();	//a function is createDrive.h that was written earlier and is used here
@@ -49,13 +55,13 @@ int main()
 	create_left(10, 0, 100); //turn to face cubes
 	msleep(10000);
 	
-	set_servo_position(main_arm_servo, main_arm_down+30);
+	create_arm(main_arm_down+30);
 	msleep(200);
-	set_servo_position(main_arm_servo, main_arm_down);
+	create_arm(main_arm_down);
 	msleep(300);
 	set_servo_position(claw_servo, claw_hold_cubes);
 	msleep(100);
-	set_servo_position(main_arm_servo, main_arm_up);
+	create_arm(main_arm_up);
 	msleep(20000); // wait 20 seconds for Link to pass
 	
 	
@@ -85,18 +91,12 @@ void main()
 	create_move(30, 30, 200);
 	msleep(20000);
 	
-	return 0;
 }
 
 
 
 
-
-
-
-
-
-
+/** =====================================================			FUNCTIONS			=====================================================**/
 
 
 
@@ -109,7 +109,7 @@ void start_function(int light_start_port)
 }
 
 
-void create_move(int left_power, int right_power, int mm) {	//create moving forward for an amount of mm
+void create_move(int left_power, int right_power, int mm) {	//create moving forward
 	create_drive_direct(right_power, left_power);
 	set_create_distance(0);
 	while(get_create_distance() < mm) {
@@ -125,7 +125,7 @@ void create_turn_CW(int speed, int degrees) {	//create turning in place clockwis
 	}
 }
 
-void create_turn_CCW(int speed, int degrees) {	//create turning in place counter-clockwise
+void create_turn_CCW(int speed, int degrees) {	//create turnign in place counter-clockwise
 	create_spin_CCW(speed);
 	set_create_normalized_angle(0);
 	while(get_create_normalized_angle() < degrees) {
@@ -133,7 +133,11 @@ void create_turn_CCW(int speed, int degrees) {	//create turning in place counter
 	}
 }
 
-//void create_arm(
+void create_arm(int position_of_servo1) {
+	
+	set_servo_position(main_arm_servo_1, position_of_servo1);
+	set_servo_position(main_arm_servo_2, position_of_servo1+225);
+}
 
 
 
