@@ -117,7 +117,7 @@ void create_move(int left_power, int right_power, int mm) {	//create moving forw
 	}
 }
 
-void create_turn_CW(int speed, int degrees) {	//create turning in place clockwise
+void create_turn_CW(int speed /* mm per second */, int degrees) {	//create turning in place clockwise
 	create_spin_CW(speed);
 	set_create_normalized_angle(0);
 	while(get_create_normalized_angle() < -degrees) {
@@ -125,7 +125,7 @@ void create_turn_CW(int speed, int degrees) {	//create turning in place clockwis
 	}
 }
 
-void create_turn_CCW(int speed, int degrees) {	//create turnign in place counter-clockwise
+void create_turn_CCW(int speed /* mm per second */, int degrees) {	//create turning in place counter-clockwise
 	create_spin_CCW(speed);
 	set_create_normalized_angle(0);
 	while(get_create_normalized_angle() < degrees) {
@@ -133,7 +133,7 @@ void create_turn_CCW(int speed, int degrees) {	//create turnign in place counter
 	}
 }
 
-void create_arm(int position_of_servo1) {
+void create_arm(int position_of_servo1 /* ticks of the servo */) {
 	
 	set_servo_position(main_arm_servo_1, position_of_servo1);
 	set_servo_position(main_arm_servo_2, position_of_servo1+225);
