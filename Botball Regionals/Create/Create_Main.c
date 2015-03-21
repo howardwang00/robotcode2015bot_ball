@@ -82,7 +82,7 @@ void start_function(int light_start_port)
 }
 
 
-void create_move(int left_power, int right_power, int mm) {	//create moving forward
+void create_move(int left_power, int right_power, int mm) {	//create moving forward for an amount of mm
 	create_drive_direct(right_power, left_power);
 	set_create_distance(0);
 	while(get_create_distance() < mm) {
@@ -98,7 +98,7 @@ void create_turn_CW(int speed, int degrees) {	//create turning in place clockwis
 	}
 }
 
-void create_turn_CCW(int speed, int degrees) {	//create turnign in place counter-clockwise
+void create_turn_CCW(int speed, int degrees) {	//create turning in place counter-clockwise
 	create_spin_CCW(speed);
 	set_create_normalized_angle(0);
 	while(get_create_normalized_angle() < degrees) {
