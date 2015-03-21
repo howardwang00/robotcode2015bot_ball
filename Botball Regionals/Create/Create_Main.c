@@ -1,10 +1,10 @@
-// Created on Fri February 6 2015 by: Howard Wang
+// Created on Fri February 6 2015
 
 
 #include "createDrive.h"
 #include "generic.h"
 
-#define light_start_sensor 2 //random #, change later
+#define light_start_sensor 2 //random #, change later, light sensor not yet applied
 #define main_arm_servo 3
 #define claw_servo 2
 
@@ -84,6 +84,16 @@ void create_move(int left_power, int right_power, int mm) {
 		msleep(1);
 	}
 }
+/*
+void create_turn(int speed) {	//note: positive speed for clockwise, negative for counterclockwise
+	create_drive_direct(right_power, left_power);
+	set_create_distance(0);
+	while(get_create_distance() < mm) {
+		msleep(1);
+	}
+}
+
+
 
 
 
