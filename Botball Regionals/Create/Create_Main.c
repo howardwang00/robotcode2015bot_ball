@@ -5,13 +5,18 @@
 #include "generic.h"
 
 #define light_start_sensor 2 //random #, change later, light sensor not yet applied
-#define main_arm_servo 3
+#define main_arm_servo_1 3
+#define main_arm_servo_2 2
 #define claw_servo 2
 
 
-#define main_arm_up 1475	//on top of mesa
-#define main_arm_mid 1000	//position of arm when driving
-#define main_arm_down 835	//picking up cubes
+#define main_arm_up_servo_1 1475	//on top of mesa
+#define main_arm_mid_servo_1 1000	//position of arm when driving
+#define main_arm_down_servo_1 835	//picking up cubes
+#define main_arm_up_servo_2 1600
+#define main_arm_mid_servo_2 1225
+#define main_arm_down_servo_2 1060
+
 #define claw_hold_cubes 475
 #define claw_open_regular 600	//when the claw is not holding anything
 #define claw_hold_botguy 340	//holding botguy
@@ -21,6 +26,13 @@ void start_function(int light_start_port_for_function_start); //function to star
 
 void create_move(int left_power, int right_power, int mm);
 
+void create_turn_CW(int speed, int degrees);
+
+void create_turn_CCW(int speed, int degrees);
+
+
+
+
 int main()
 {
 	start_function(light_start_sensor);
@@ -28,7 +40,7 @@ int main()
 	set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
 	msleep(100);
 	create_drive_direct_dist(-10, -10, 10);	//get off the wall
-	create_stop();
+	create_block();	//a function is createDrive.h that was written earlier and is used here
 	msleep(500);
 	
 	create_left(10, 0, 100); //turn to face cubes
@@ -93,6 +105,8 @@ void create_turn_CCW(int speed, int degrees) {	//create turnign in place counter
 		msleep(1);
 	}
 }
+
+//void create_arm(
 
 
 
