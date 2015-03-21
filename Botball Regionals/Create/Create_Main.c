@@ -31,12 +31,15 @@ void create_turn_CW(int speed, int degrees);
 void create_turn_CCW(int speed, int degrees);
 
 
-
-
+//#define MAIN
+#ifdef MAIN
 int main()
 {
 	start_function(light_start_sensor);
 	
+	
+	
+	/*
 	set_servo_position(main_arm_servo, main_arm_mid); //move arm to a higher position than cubes
 	msleep(100);
 	create_drive_direct_dist(-10, -10, 10);	//get off the wall
@@ -64,12 +67,36 @@ int main()
 	
 	set_servo_position(claw_servo, claw_open_regular); //drop cubes
 	msleep(500);
+	*/
+	
 	
 	disable_servos();
 	create_stop();
 	create_disconnect();
 	return 0;
 }
+#endif
+
+
+#define TEST_CREATE_MOVE
+#ifdef TEST_CREATE_MOVE
+void main()
+{
+	create_move(30, 30, 200);
+	msleep(20000);
+	
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
