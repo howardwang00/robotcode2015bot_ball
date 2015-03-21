@@ -37,7 +37,7 @@ void create_arm(int position_of_servo1);
 
 
 
-//#define MAIN
+#define MAIN
 #ifdef MAIN
 int main()
 {
@@ -45,7 +45,7 @@ int main()
 	
 	
 	
-	/*
+	
 	create_arm(main_arm_mid); //move arm to a higher position than cubes
 	msleep(100);
 	create_drive_direct_dist(-10, -10, 10);	//get off the wall
@@ -73,7 +73,7 @@ int main()
 	
 	set_servo_position(claw_servo, claw_open_regular); //drop cubes
 	msleep(500);
-	*/
+	
 	
 	
 	disable_servos();
@@ -84,7 +84,7 @@ int main()
 #endif
 
 
-#define TEST_CREATE_MOVE
+//#define TEST_CREATE_MOVE
 #ifdef TEST_CREATE_MOVE
 void main()
 {
@@ -92,7 +92,7 @@ void main()
 	msleep(20000);
 	
 }
-
+#endif
 
 
 
