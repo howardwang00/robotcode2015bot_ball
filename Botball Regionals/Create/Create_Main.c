@@ -10,12 +10,13 @@
 #define claw_servo 2
 
 
-#define main_arm_up_servo_1 1475	//on top of mesa
-#define main_arm_mid_servo_1 1000	//position of arm when driving
-#define main_arm_down_servo_1 835	//picking up cubes
-#define main_arm_up_servo_2 1700
-#define main_arm_mid_servo_2 1225
-#define main_arm_down_servo_2 1060
+#define main_arm_up_servo_1 1175	//on top of mesa
+#define main_arm_mid_servo_1 1280	//position of arm when driving
+#define main_arm_down_servo_1 1425	//picking up cubes
+#define main_arm_default 480
+//#define main_arm_up_servo_2 
+//#define main_arm_mid_servo_2 
+//#define main_arm_down_servo_2 
 
 #define claw_hold_cubes 475
 #define claw_open_regular 600	//when the claw is not holding anything
@@ -41,17 +42,32 @@ void create_arm(int position_of_servo1);
 #ifdef MAIN
 int main()
 {
+	//create_arm(main_arm_default);	//make sure servo is in the correct position so enabling servos won't screw us up
 	start_function(light_start_sensor);
 	
+	//create_arm(main_arm_mid_servo_1);
+	create_backward(-50, 10);
+	create_stop();
+	create_block();
+	create_wait_time(1);
+	create_left(30, 0, 10);
+	create_stop();
+	create_block();
 	
-	create_arm(main_arm_mid); //move arm to a higher position than cubes
+	msleep(1000);
+	
+	/*
+	//create_arm(main_arm_mid); //move arm to a higher position than cubes
 	msleep(100);
-	create_drive_direct_dist(-10, -10, 10);	//get off the wall
-	create_block();	//a function is createDrive.h that was written earlier and is used here
+	create_drive_direct_dist(-10, -10, -10);	//get off the wall
+	create_stop();
+	create_block();
 	msleep(500);
 	
 	create_left(10, 0, 100); //turn to face cubes
-	msleep(10000);
+	create_stop();
+	create_block();
+	msleep(100);
 	
 	create_arm(main_arm_down+30);
 	msleep(200);
@@ -63,19 +79,20 @@ int main()
 	msleep(20000); // wait 20 seconds for Link to pass
 	
 	
-	create_drive_direct_dist(-100, -100, 100);
-	msleep(100);
-	create_drive_direct_dist(-30, -30, 100); //go slower for the rest of the way
-	msleep(300);
+	create_backward(100, 100)
+	create_backward(30, 100); //go slower for the rest of the way
+	create_stop();
+	create_block();
 	
 	
 	set_servo_position(claw_servo, claw_open_regular); //drop cubes
 	msleep(500);
-	
+	*/
 	
 	
 	disable_servos();
 	create_stop();
+	create_block();
 	create_disconnect();
 	return 0;
 }
@@ -102,7 +119,7 @@ void start_function(int light_start_port)
 {
 	//light_start(light_start_port_or_function_start);
 	shut_down_in(119); // Time is 120 seconds, but it needs to shut down a bit earlier
-	enable_servos();
+	//enable_servos();
 	create_connect();
 }
 
@@ -134,7 +151,7 @@ void create_turn_CCW(int speed /* mm per second */, int degrees) {	//create turn
 void create_arm(int position_of_servo1 /* ticks of the servo */) {
 	
 	set_servo_position(main_arm_servo_1, position_of_servo1);
-	set_servo_position(main_arm_servo_2, position_of_servo1+225);
+	set_servo_position(main_arm_servo_2, (- position_of_servo1) + main_arm_down_servo_1);
 }
 
 
