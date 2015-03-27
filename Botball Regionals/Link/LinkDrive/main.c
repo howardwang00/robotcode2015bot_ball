@@ -151,7 +151,7 @@ int main2()
 	squareup(10);
 	return 0;
 }
-int main3()
+int main4()
 {
 	camera_open(CAM_RES);
 	enable_servos();
