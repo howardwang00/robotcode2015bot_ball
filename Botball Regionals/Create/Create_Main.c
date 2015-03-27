@@ -46,17 +46,11 @@ int main()
 	start_function(light_start_sensor);
 	
 	//create_arm(main_arm_mid_servo_1);
-	create_backward(-50, 10);
-	create_stop();
-	create_block();
-	create_wait_time(1);
-	create_left(30, 0, 10);
-	create_stop();
-	create_block();
+	
 	
 	msleep(1000);
 	
-	/*
+	
 	//create_arm(main_arm_mid); //move arm to a higher position than cubes
 	msleep(100);
 	create_drive_direct_dist(-10, -10, -10);	//get off the wall
@@ -69,6 +63,7 @@ int main()
 	create_block();
 	msleep(100);
 	
+	/*
 	create_arm(main_arm_down+30);
 	msleep(200);
 	create_arm(main_arm_down);
