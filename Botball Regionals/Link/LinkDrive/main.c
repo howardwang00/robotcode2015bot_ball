@@ -23,8 +23,8 @@ Value:
 
 //Motors and servos
 #define SERV_SORT 0
-#define MOT_PICK 1
-#define SORT_SPEED 65
+#define MOT_PICK 3
+#define SORT_SPEED 70
 
 //Position functions
 void sort_main(){set_servo_position(SERV_SORT,1500);msleep(200);}
@@ -48,7 +48,20 @@ void squareup(int max_time)
 	}
 	ao();
 }
+/*
+shakes the robot left and right reps amount of times
 
+reps: the amount of shakes we did.
+*/
+void shake(int reps)
+{
+	int i;
+	for(i = 0;i<reps;i++)
+	{
+		left(5,0);
+		right(5,0);
+	}
+}
 /*
 sorts the poms into their respective bins for time seconds
 
@@ -57,14 +70,16 @@ initial: the average size of tribbles on the camera, based on a percentage value
 fudge: the maximum discrepancy from the main size allowed, based on a percentage value between 0 and 100.
 time: the duration for which this program runs, in seconds.
 */
-void cam_sort(int mainColor, int initial, int fudge, int time)
+void cam_sort(int mainColor, int initial, int fudge, int time, int jamDist)
 {
 	//initialization process
 	if(initial<0||initial>100) 
-		printf("Initial is out of the specified range\n");
+		printf("Warning: Initial is out of the specified range\n");
 	if(fudge<0||fudge>100)
-		printf("fudge is out of the specified range\n");
+		printf("Warning: Fudge is out of the specified range\n");
 	int size;
+	jamDist = jamDist*CMtoBEMF;
+	float lastTest = curr_time();
 	int discrepancy;
 	printf("Tracking in:");
 	switch(CAM_RES)
@@ -88,10 +103,23 @@ void cam_sort(int mainColor, int initial, int fudge, int time)
 	multicamupdate(5);
 	float startTime = curr_time();
 	int area = 0;
+	int last = get_motor_position_counter(MOT_PICK);
 	motor(MOT_PICK,SORT_SPEED);
 	//Sorting process
 	while(startTime+time>=curr_time())	//Timekeeper
 	{
+		if(lastTest+2<=curr_time())
+		{
+			if(jamDist>(get_motor_position_counter(MOT_PICK)-last))
+			{
+				motor(MOT_PICK,-100);
+				//shake(5);
+				msleep(3000);
+				motor(MOT_PICK,SORT_SPEED);
+			}
+			last = get_motor_position_counter(MOT_PICK);
+			lastTest = curr_time();
+		}
 		camera_update();
 		area = get_object_area(mainColor,0);
 		if(area>500)
@@ -123,25 +151,29 @@ int main2()
 	squareup(10);
 	return 0;
 }
-int main()
+int main3()
 {
 	camera_open(CAM_RES);
 	enable_servos();
 	motor(MOT_LEFT,15);
 	motor(MOT_RIGHT,35);
-	cam_sort(0,50,25,50);
+	cam_sort(0,70,25,50,3);
 }
-int main3()
+int main()
 {
-	camera_open(LOW_RES);
+	camera_open(CAM_RES);
 	enable_servos();
-	forward(120);
-	left(50,0);
-	forward(60);
-	right(50,0);
+	left(5,0);
+	forward(140);
+	right(80,ks/2);
+	motor(MOT_LEFT,-70);
+	motor(MOT_RIGHT,-70);
+	msleep(3000);
+	forward(2);
+	left(20,0);
 	forward(45);
 	right(180,0);
-	cam_sort(0,50,25,10);
+	cam_sort(0,70,25,50,3);
 	forward(240);
 	left(135,0);
 	forward(120);
