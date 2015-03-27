@@ -42,13 +42,10 @@ void create_arm(int position_of_servo1);
 #ifdef MAIN
 int main()
 {
-	//create_arm(main_arm_default);	//make sure servo is in the correct position so enabling servos won't screw us up
+	create_arm(main_arm_default);	//make sure servo is in the correct position so enabling servos won't screw us up
 	start_function(light_start_sensor);
 	
 	//create_arm(main_arm_mid_servo_1);
-	
-	
-	msleep(1000);
 	
 	
 	//create_arm(main_arm_mid); //move arm to a higher position than cubes
@@ -58,12 +55,12 @@ int main()
 	create_block();
 	msleep(500);
 	
-	create_left(10, 0, 100); //turn to face cubes
+	create_left(30, 0, 10); //turn to face cubes
 	create_stop();
 	create_block();
 	msleep(100);
 	
-	/*
+	
 	create_arm(main_arm_down+30);
 	msleep(200);
 	create_arm(main_arm_down);
@@ -74,15 +71,15 @@ int main()
 	msleep(20000); // wait 20 seconds for Link to pass
 	
 	
-	create_backward(100, 100)
-	create_backward(30, 100); //go slower for the rest of the way
+	create_drive_direct_dist(-100, -100, -100);
+	create_drive_direct_dist(-30, -30, -100); //go slower for the rest of the way
 	create_stop();
 	create_block();
 	
 	
 	set_servo_position(claw_servo, claw_open_regular); //drop cubes
 	msleep(500);
-	*/
+	
 	
 	
 	disable_servos();
@@ -114,7 +111,7 @@ void start_function(int light_start_port)
 {
 	//light_start(light_start_port_or_function_start);
 	shut_down_in(119); // Time is 120 seconds, but it needs to shut down a bit earlier
-	//enable_servos();
+	enable_servos();
 	create_connect();
 }
 
