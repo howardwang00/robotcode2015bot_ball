@@ -45,10 +45,12 @@ int main()
 	create_arm(main_arm_default);	//make sure servo is in the correct position so enabling servos won't screw us up
 	start_function(light_start_sensor);
 	
-	//create_arm(main_arm_mid_servo_1);
 	
 	
-	//create_arm(main_arm_mid); //move arm to a higher position than cubes
+	create_arm(main_arm_mid_servo_1); //move arm to a higher position than cubes
+	
+	
+	/*
 	msleep(100);
 	create_drive_direct_dist(-10, -10, -10);	//get off the wall
 	create_stop();
@@ -79,7 +81,7 @@ int main()
 	
 	set_servo_position(claw_servo, claw_open_regular); //drop cubes
 	msleep(500);
-	
+	*/
 	
 	
 	disable_servos();
