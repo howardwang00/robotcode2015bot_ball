@@ -1,5 +1,6 @@
 #include "newmenu.h"
 struct menuitem menu[];
+
 int selectionlist(int length){
 	int current = DEFAULT_OPTION;
 	int counter = 1;

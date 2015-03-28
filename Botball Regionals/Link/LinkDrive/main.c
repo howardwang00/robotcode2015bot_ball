@@ -23,6 +23,7 @@ Value:
 
 //Motors and servos
 #define SERV_SORT 0
+#define SERV_GRAB 3
 #define MOT_PICK 3
 #define SORT_SPEED 70
 
@@ -30,6 +31,8 @@ Value:
 void sort_main(){set_servo_position(SERV_SORT,1500);msleep(200);}
 void sort_sec(){set_servo_position(SERV_SORT,780);msleep(200);}
 void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
+void grab_poms(){set_servo_position(SERV_GRAB,1000);msleep(200);}
+void release_poms(){set_servo_position(SERV_GRAB,220);msleep(200);}
 
 //Currently not in use. No touch sensors to use with.
 void squareup(int max_time)
@@ -81,6 +84,7 @@ void cam_sort(int mainColor, int initial, int fudge, int time, int jamDist)
 	jamDist = jamDist*CMtoBEMF;
 	float lastTest = curr_time();
 	int discrepancy;
+	//determining resolution
 	printf("Tracking in:");
 	switch(CAM_RES)
 	{
@@ -100,6 +104,7 @@ void cam_sort(int mainColor, int initial, int fudge, int time, int jamDist)
 			printf("High res\n");
 		break;
 	}
+	//camera sorting process
 	multicamupdate(5);
 	float startTime = curr_time();
 	int area = 0;
@@ -146,6 +151,16 @@ void cam_sort(int mainColor, int initial, int fudge, int time, int jamDist)
 		sort_mid();
 	}
 }
+/*
+#define s_START 0
+#define s_CROSSFIELD 1
+
+struct menuitem menu[]=
+{
+	{s_START,"start"},
+	{s_CROSSFIELD,"crossfield"}
+};
+*/
 int main2()
 {
 	squareup(10);
@@ -161,18 +176,41 @@ int main4()
 }
 int main()
 {
+	set_servo_position(SERV_GRAB,1250);
+	msleep(300);
 	camera_open(CAM_RES);
+	release_poms();
 	enable_servos();
 	left(5,0);
-	forward(140);
-	right(80,ks/2);
-	motor(MOT_LEFT,-70);
+	forward(45);
+	grab_poms();
+	right(5,0);
+	forward(130);
+	right(92,ks/2);
+	backward(75);
+	motor(MOT_LEFT,70);
+	motor(MOT_RIGHT,74);
+	cam_sort(0,70,25,30,3);
+	release_poms();
+	backward(30);
+	forward(30);
+	right(88,0);
+	forward(60);
+	motor(MOT_PICK,-40);
+	grab_poms();
+	backward(60);
+	left(88,0);
+	release_poms();
+	//right(105,46);
+	/*motor(MOT_LEFT,-70);
 	motor(MOT_RIGHT,-70);
 	msleep(3000);
 	forward(2);
 	left(20,0);
 	forward(45);
-	right(180,0);
+	right(180,0);*/
+	motor(MOT_LEFT,40);
+	motor(MOT_RIGHT,55);
 	cam_sort(0,70,25,50,3);
 	forward(240);
 	left(135,0);
