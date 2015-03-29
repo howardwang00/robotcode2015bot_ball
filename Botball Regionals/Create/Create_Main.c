@@ -10,10 +10,10 @@
 #define claw_servo 2
 
 
-#define main_arm_up_servo_1 1175	//on top of mesa
+#define main_arm_up_servo_1 1225	//on top of mesa
 //#define main_arm_mid_servo_1 1280
-#define main_arm_down_servo_1 1775	//picking up cubes
-#define main_arm_default 480	//position of arm when driving
+#define main_arm_down_servo_1 1825	//picking up cubes
+#define main_arm_default 530	//position of arm when driving
 //#define main_arm_up_servo_2 
 //#define main_arm_mid_servo_2 
 //#define main_arm_down_servo_2 
@@ -34,7 +34,7 @@ void create_turn_CCW(int speed, int degrees);
 
 void create_arm(int position_of_servo1);
 
-
+void create_default();
 
 
 
@@ -42,7 +42,7 @@ void create_arm(int position_of_servo1);
 #ifdef MAIN
 int main()
 {
-	create_arm(main_arm_default);	//make sure servo is in the correct position so enabling servos won't screw us up
+	create_default();	//make sure servo is in the correct position so enabling servos won't screw us up
 	printf("1\n");
 	start_function(light_start_sensor);
 	printf("4\n");
@@ -153,8 +153,11 @@ void create_turn_CCW(int speed /* mm per second */, int degrees) {	//create turn
 
 void create_arm(int position_of_servo1 /* ticks of the servo */) {
 	set_servo_position(main_arm_servo_1, position_of_servo1);
-	set_servo_position(main_arm_servo_2, (- position_of_servo1) + main_arm_down_servo_1);
+	set_servo_position(main_arm_servo_2, (- position_of_servo1) + main_arm_down_servo_1 + 60);
 }
 
-
+void create_default() {
+	set_servo_position(main_arm_servo_1, main_arm_default);
+	set_servo_position(main_arm_servo_2, (- main_arm_default) + main_arm_down_servo_1 + 100);
+}
 
