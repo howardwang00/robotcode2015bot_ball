@@ -91,17 +91,17 @@ void cam_sort(int mainColor, int initial, int fudge, int time, int jamDist)
 		case LOW_RES:
 			size = ((160*120)/100)*initial;
 			discrepancy = ((160*120)/100)*fudge;
-			printf("Low res\n");
+			printf("Low resolution\n");
 		break;
 		case MED_RES:
 			size = ((320*240)/100)*initial;
 			discrepancy = ((320*240)/100)*fudge;
-			printf("Medium res\n");
+			printf("Medium resolution\n");
 		break;
 		case HIGH_RES:
 			size = ((640*480)/100)*initial;
 			discrepancy = ((640*480)/100)*fudge;
-			printf("High res\n");
+			printf("High resolution\n");
 		break;
 	}
 	//camera sorting process
