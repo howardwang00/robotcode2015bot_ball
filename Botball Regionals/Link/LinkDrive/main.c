@@ -25,14 +25,46 @@ Value:
 #define SERV_SORT 0
 #define SERV_GRAB 3
 #define MOT_PICK 3
-#define SORT_SPEED 70
+#define SORT_SPEED 60
 
 //Position functions
 void sort_main(){set_servo_position(SERV_SORT,1500);msleep(200);}
 void sort_sec(){set_servo_position(SERV_SORT,780);msleep(200);}
 void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
-void grab_poms(){set_servo_position(SERV_GRAB,1000);msleep(200);}
-void release_poms(){set_servo_position(SERV_GRAB,220);msleep(200);}
+void grab_poms(){slow_servo(SERV_GRAB,1000);msleep(200);}
+void release_poms(){slow_servo(SERV_GRAB,220);msleep(200);}
+void slow_servo(int servo,int pos)
+{
+	if(pos > get_servo_position(servo))
+	{
+		while(pos > get_servo_position(servo))
+		{
+			set_servo_position(servo,get_servo_position(servo)+10);
+			msleep(20);
+		}
+	}
+	else
+	{
+		while(pos < get_servo_position(servo))
+		{
+			set_servo_position(servo,get_servo_position(servo)-10);
+			msleep(20);
+		}
+	}
+}
+void bump_poms()
+{
+	/*set_servo_position(SERV_GRAB,1500);
+	msleep(200);*/
+	slow_servo(SERV_GRAB,800);
+	msleep(200);
+	motor(MOT_LEFT,50);
+	motor(MOT_RIGHT,50);
+	clear_all_drive();
+	WAIT(5*CMtoBEMF<=gmpc(MOT_RIGHT)&&5*CMtoBEMF<=gmpc(MOT_LEFT))
+	motor(MOT_RIGHT,0);
+	motor(MOT_LEFT,0);
+}
 
 //Currently not in use. No touch sensors to use with.
 void squareup(int max_time)
@@ -86,24 +118,24 @@ void cam_sort(int mainColor, int initial, int fudge, int time, int jamDist)
 	int discrepancy;
 	//determining resolution
 	printf("Tracking in:");
+	int res_val = 0;
 	switch(CAM_RES)
 	{
 		case LOW_RES:
-			size = ((160*120)/100)*initial;
-			discrepancy = ((160*120)/100)*fudge;
+			res_val = (160*120)/100;
 			printf("Low res\n");
 		break;
 		case MED_RES:
-			size = ((320*240)/100)*initial;
-			discrepancy = ((320*240)/100)*fudge;
+			res_val = (320*240)/100;
 			printf("Medium res\n");
 		break;
 		case HIGH_RES:
-			size = ((640*480)/100)*initial;
-			discrepancy = ((640*480)/100)*fudge;
+			res_val = (640*480)/100;
 			printf("High res\n");
 		break;
 	}
+	size = res_val*initial;
+	discrepancy = res_val*fudge;
 	//camera sorting process
 	multicamupdate(5);
 	float startTime = curr_time();
@@ -113,18 +145,21 @@ void cam_sort(int mainColor, int initial, int fudge, int time, int jamDist)
 	//Sorting process
 	while(startTime+time>=curr_time())	//Timekeeper
 	{
+		//failsafe
 		if(lastTest+2<=curr_time())
 		{
+			bump_poms();
 			if(jamDist>(get_motor_position_counter(MOT_PICK)-last))
 			{
-				motor(MOT_PICK,-100);
+				motor(MOT_PICK,-90);
 				//shake(5);
-				msleep(3000);
+				msleep(2000);
 				motor(MOT_PICK,SORT_SPEED);
 			}
 			last = get_motor_position_counter(MOT_PICK);
 			lastTest = curr_time();
 		}
+		//actual sorting
 		camera_update();
 		area = get_object_area(mainColor,0);
 		if(area>500)
@@ -166,17 +201,24 @@ int main2()
 	squareup(10);
 	return 0;
 }
-int main4()
+int main3()
 {
 	camera_open(CAM_RES);
 	enable_servos();
-	motor(MOT_LEFT,15);
-	motor(MOT_RIGHT,35);
+	grab_poms();
+	//motor(MOT_LEFT,30);
+	//motor(MOT_RIGHT,35);
 	cam_sort(0,70,25,50,3);
 }
 int main()
 {
-	set_servo_position(SERV_GRAB,1250);
+	motor(MOT_LEFT,-70);
+	motor(MOT_RIGHT,-70);
+	msleep(1000);
+	motor(MOT_RIGHT,0);
+	motor(MOT_LEFT,0);
+	forward(6);
+	slow_servo(SERV_GRAB,1250);
 	msleep(300);
 	camera_open(CAM_RES);
 	release_poms();
@@ -211,7 +253,7 @@ int main()
 	right(180,0);*/
 	motor(MOT_LEFT,40);
 	motor(MOT_RIGHT,55);
-	cam_sort(0,70,25,50,3);
+	cam_sort(0,70,30,50,3);
 	forward(240);
 	left(135,0);
 	forward(120);
