@@ -5,15 +5,15 @@
 #include "generic.h"
 
 #define light_start_sensor 2 //random #, change later, light sensor not yet applied
-#define main_arm_servo_1 3
-#define main_arm_servo_2 2
+#define main_arm_servo_1 2	//KIPR flipped 2 and 3 on the servo ports
+#define main_arm_servo_2 3
 #define claw_servo 2
 
 
-#define main_arm_up_servo_1 1175	//on top of mesa
-#define main_arm_mid_servo_1 1280	//position of arm when driving
-#define main_arm_down_servo_1 1425	//picking up cubes
-#define main_arm_default 480
+#define main_arm_up_servo_1 1225	//on top of mesa
+//#define main_arm_mid_servo_1 1280
+#define main_arm_down_servo_1 1825	//picking up cubes
+#define main_arm_default 530	//position of arm when driving
 //#define main_arm_up_servo_2 
 //#define main_arm_mid_servo_2 
 //#define main_arm_down_servo_2 
@@ -34,7 +34,7 @@ void create_turn_CCW(int speed, int degrees);
 
 void create_arm(int position_of_servo1);
 
-
+void create_default();
 
 
 
@@ -42,15 +42,40 @@ void create_arm(int position_of_servo1);
 #ifdef MAIN
 int main()
 {
-	create_arm(main_arm_default);	//make sure servo is in the correct position so enabling servos won't screw us up
+	create_default();	//make sure servo is in the correct position so enabling servos won't screw us up
+	printf("1\n");
 	start_function(light_start_sensor);
+	printf("4\n");
+	
+	
+	msleep(1000);
+	create_arm(main_arm_up_servo_1); //move arm to a higher position than cubes
+	printf("5");
+	msleep(500);
+	create_arm(main_arm_down_servo_1);
+	printf("6");
+	msleep(500);
 	
 	
 	
-	create_arm(main_arm_mid_servo_1); //move arm to a higher position than cubes
 	
 	
-	/*
+	disable_servos();
+	msleep(100);
+	create_stop();
+	create_block();
+	msleep(100);
+	create_disconnect();
+	return 0;
+}
+#endif
+
+
+//#define TEST_CREATE_DRIVEPATH
+#ifdef TEST_CREATE_DRIVEPATH
+void main()
+{
+	
 	msleep(100);
 	create_drive_direct_dist(-10, -10, -10);	//get off the wall
 	create_stop();
@@ -63,7 +88,7 @@ int main()
 	msleep(100);
 	
 	
-	create_arm(main_arm_down+30);
+	create_arm(main_arm_down-30);
 	msleep(200);
 	create_arm(main_arm_down);
 	msleep(300);
@@ -81,24 +106,6 @@ int main()
 	
 	set_servo_position(claw_servo, claw_open_regular); //drop cubes
 	msleep(500);
-	*/
-	
-	
-	disable_servos();
-	create_stop();
-	create_block();
-	create_disconnect();
-	return 0;
-}
-#endif
-
-
-//#define TEST_CREATE_MOVE
-#ifdef TEST_CREATE_MOVE
-void main()
-{
-	create_move(30, 30, 200);
-	msleep(20000);
 	
 }
 #endif
@@ -113,7 +120,9 @@ void start_function(int light_start_port)
 {
 	//light_start(light_start_port_or_function_start);
 	shut_down_in(119); // Time is 120 seconds, but it needs to shut down a bit earlier
+	printf("2\n");
 	enable_servos();
+	printf("3\n");
 	create_connect();
 }
 
@@ -143,10 +152,12 @@ void create_turn_CCW(int speed /* mm per second */, int degrees) {	//create turn
 }
 
 void create_arm(int position_of_servo1 /* ticks of the servo */) {
-	
 	set_servo_position(main_arm_servo_1, position_of_servo1);
-	set_servo_position(main_arm_servo_2, (- position_of_servo1) + main_arm_down_servo_1);
+	set_servo_position(main_arm_servo_2, (- position_of_servo1) + main_arm_down_servo_1 + 60);
 }
 
-
+void create_default() {
+	set_servo_position(main_arm_servo_1, main_arm_default);
+	set_servo_position(main_arm_servo_2, (- main_arm_default) + main_arm_down_servo_1 + 100);
+}
 
