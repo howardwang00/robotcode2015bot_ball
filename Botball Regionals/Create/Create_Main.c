@@ -4,6 +4,8 @@
 #include "createDrive.h"
 #include "generic.h"
 
+//#define Tournament 1
+
 #define light_start_sensor 2 //random #, change later, light sensor not yet applied
 #define main_arm_servo_1 2	//KIPR flipped 2 and 3 on the servo ports
 #define main_arm_servo_2 3
@@ -118,7 +120,9 @@ void main()
 
 void start_function(int light_start_port)
 {
-	//light_start(light_start_port_or_function_start);
+	#ifdef Tournament
+	light_start(light_start_port_or_function_start);
+	#endif
 	shut_down_in(119); // Time is 120 seconds, but it needs to shut down a bit earlier
 	printf("2\n");
 	enable_servos();
