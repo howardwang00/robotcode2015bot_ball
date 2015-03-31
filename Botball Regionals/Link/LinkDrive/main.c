@@ -32,7 +32,7 @@ void sort_main(){set_servo_position(SERV_SORT,1500);msleep(200);}
 void sort_sec(){set_servo_position(SERV_SORT,780);msleep(200);}
 void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
 void grab_poms(){servo_set(SERV_GRAB,1000,.2);}
-void release_poms(){servo_set(SERV_GRAB,220,.2);msleep(200);}
+void release_poms(){servo_set(SERV_GRAB,220,.2);}
 /*void slow_servo(int servo,int pos)
 {
 	if(pos > get_servo_position(servo))
@@ -100,21 +100,19 @@ void shake(int reps)
 sorts the poms into their respective bins for time seconds
 
 mainColor: the pom color that goes into the main bin. See above comment for camera color designations.
-initial: the average size of tribbles on the camera, based on a percentage value between 0 and 100.
-fudge: the maximum discrepancy from the main size allowed, based on a percentage value between 0 and 100.
+size: the average size of tribbles on the camera, based on a percentage value between 0 and 100.
+discrepancy: the maximum discrepancy from the main size allowed, based on a percentage value between 0 and 100.
 time: the duration for which this program runs, in seconds.
 */
-void cam_sort(int mainColor, int initial, int fudge, int time, int jamDist)
+void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 {
 	//initialization process
-	if(initial<0||initial>100) 
-	printf("Warning: Initial is out of the specified range\n");
-	if(fudge<0||fudge>100)
-	printf("Warning: Fudge is out of the specified range\n");
-	int size;
+	if(size<0||size>100) 
+	printf("Warning: Size is out of the specified range!\n");
+	if(discrepancy<0||discrepancy>100)
+	printf("Warning: Discrepancy is out of the specified range!\n");
 	jamDist = jamDist*CMtoBEMF;
 	float lastTest = curr_time();
-	int discrepancy;
 	//determining resolution
 	printf("Tracking in:");
 	int res_val = 0;
@@ -132,10 +130,13 @@ void cam_sort(int mainColor, int initial, int fudge, int time, int jamDist)
 		res_val = (640*480)/100;
 		printf("High res\n");
 		break;
+		default:
+		printf("Warning: Unknown res!\n");
+		break;
 	}
-	size = res_val*initial;
-	discrepancy = res_val*fudge;
-	//camera sorting process
+	size = res_val*size;
+	discrepancy = res_val*discrepancy;
+	//camera sorting initialization
 	multicamupdate(5);
 	float startTime = curr_time();
 	int area = 0;
@@ -152,7 +153,7 @@ void cam_sort(int mainColor, int initial, int fudge, int time, int jamDist)
 			{
 				motor(MOT_PICK,-90);
 				//shake(5);
-				msleep(2000);
+				msleep(1000);
 				motor(MOT_PICK,SORT_SPEED);
 			}
 			last = get_motor_position_counter(MOT_PICK);
