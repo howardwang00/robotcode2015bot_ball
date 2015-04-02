@@ -4,6 +4,7 @@ You MUST define the states before constructing the menuitem
 Each state must have its own unique number
 Calling next(s_END); will end the program
 All code within the while loop must be inside a state
+Including newmenu without defining the menu and states in this program will cause an error
 
 Basic sample program with menu code. You can copy and paste this and it will work:
 
