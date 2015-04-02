@@ -1,5 +1,10 @@
 #include "newmenu.h"
-struct menuitem menu[];
+
+void Get_Mode()
+{
+	currstate = menu[options()].snum;
+}
+
 int selectionlist(int length){
 	int current = DEFAULT_OPTION;
 	int counter = 1;
@@ -28,6 +33,15 @@ int selectionlist(int length){
 		}
 	}
 }
+int options(){
+	display_clear();
+	msleep(10);
+	display_printf(0,0,"A Accept|B down|C up\n");
+	while(a_button()){msleep(10);}
+	int result = selectionlist(draw_screen());
+	display_clear();
+	return(result);
+}
 
 int draw_screen(){
 	int i;
@@ -39,20 +53,6 @@ int draw_screen(){
 	return(i);
 }
 
-int options(){
-	display_clear();
-	msleep(10);
-	display_printf(0,0,"A Accept|B down|C up\n");
-	while(a_button()){msleep(10);}
-	int result = selectionlist(draw_screen());
-	display_clear();
-	return(result);
-}
-
-void Get_Mode()
-{
-	currstate = menu[options()].snum;
-}
 
 void mnext(int State) {
 	int i;
