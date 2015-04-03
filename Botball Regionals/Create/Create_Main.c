@@ -13,14 +13,14 @@
 
 #define main_arm_up_servo_1 1100	//on top of mesa
 //#define main_arm_mid_servo_1 1280
-#define main_arm_down_servo_1 1300	//picking up cubes
+#define main_arm_down_servo_1 1525	//picking up cubes
 #define main_arm_default 100	//position of arm when driving
 //#define main_arm_up_servo_2 
 //#define main_arm_mid_servo_2 
 //#define main_arm_down_servo_2 
 
 #define claw_hold_cubes 475
-#define claw_open_regular 600	//when the claw is not holding anything
+#define claw_open_regular 700	//when the claw is not holding anything
 #define claw_hold_botguy 340	//holding botguy
 //#define claw_hold_pod 400	//holding pod
 
@@ -35,7 +35,7 @@ void create_turn_CCW(int speed, int degrees);
 
 void create_arm(int position_of_servo1);
 
-void create_default();
+void create_arm_default();
 
 
 
@@ -76,7 +76,7 @@ int main()
 #ifdef TEST_CREATE_DRIVEPATH
 void main()
 {
-	create_arm(main_arm_down_servo_1 - 200);
+	create_arm(main_arm_down_servo_1 - 50);	//to get above the cubes when turned towards them
 	set_servo_position(claw_servo, claw_open_regular);
 	enable_servos();
 	create_connect();
@@ -86,21 +86,24 @@ void main()
 	create_stop();
 	create_block();
 	
-	create_left(50, 0, 15); //turn to face cubes
+	create_left(35, 0, 15); //turn to face cubes
 	create_stop();
 	create_block();
-	msleep(100);
+	msleep(1000);
+	set_servo_position(claw_servo, claw_open_regular + 50);
+	msleep(300);
 	
 	
 	create_arm(main_arm_down_servo_1);
-	msleep(300);
+	msleep(500);
 	set_servo_position(claw_servo, claw_hold_cubes);
-	msleep(100);
+	msleep(700);
 	create_arm(main_arm_up_servo_1);
-	msleep(1000); // wait for Link to pass
+	msleep(1000);
+	create_left(5, 0, 15);	//turn to face caldera
 	
 	
-	create_drive_direct_dist(-100, -100, -400);
+	create_drive_direct_dist(-100, -100, -810);
 	create_stop();
 	create_block();
 	msleep(500);
@@ -162,12 +165,12 @@ void create_turn_CCW(int speed /* mm per second */, int degrees) {	//create turn
 
 void create_arm(int position_of_servo1 /* ticks of the servo */) {
 	set_servo_position(main_arm_servo_1, position_of_servo1);
-	set_servo_position(main_arm_servo_2, (- position_of_servo1) + main_arm_down_servo_1 + 60);
+	//set_servo_position(main_arm_servo_2, (- position_of_servo1) + main_arm_down_servo_1 + 60);
 }
 
-void create_default() {
+void create_arm_default() {
 	set_servo_position(main_arm_servo_1, main_arm_default);
-	set_servo_position(main_arm_servo_2, (- main_arm_default) + main_arm_down_servo_1 + 100);
+	//set_servo_position(main_arm_servo_2, (- main_arm_default) + main_arm_down_servo_1 + 100);
 }
 
 
