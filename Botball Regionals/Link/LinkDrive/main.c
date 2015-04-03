@@ -206,7 +206,7 @@ struct menuitem menu[]=
 	{s_PILE2,"Pile 2"},
 	{s_SQUAREUP,"squareup"},
 	{s_RAWSORT,"sorting"},
-	{s_END,"END"},
+	{s_END,"END"}
 };
 
 int main()
