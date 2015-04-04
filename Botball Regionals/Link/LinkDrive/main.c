@@ -30,9 +30,9 @@ Value:
 //Position functions
 void sort_main(){set_servo_position(SERV_SORT,1500);msleep(200);}
 void sort_sec(){set_servo_position(SERV_SORT,780);msleep(200);}
-void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
-void grab_poms(){servo_set(SERV_GRAB,1000,.2);}
-void release_poms(){servo_set(SERV_GRAB,220,.2);}
+//void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
+void grab_poms(){set_servo_position(SERV_GRAB,1000);msleep(200);}
+void release_poms(){set_servo_position(SERV_GRAB,220);msleep(200);}
 /*void slow_servo(int servo,int pos)
 {
 	if(pos > get_servo_position(servo))
@@ -56,7 +56,8 @@ void bump_poms()
 {
 	/*set_servo_position(SERV_GRAB,1500);
 	msleep(200);*/
-	servo_set(SERV_GRAB,800,.2);
+	set_servo_position(SERV_GRAB,800);
+	msleep(200);
 	motor(MOT_LEFT,50);
 	motor(MOT_RIGHT,50);
 	clear_all_drive();
@@ -166,12 +167,17 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 		{
 			printf("Seen Blob of Main color\n");
 			if(area>=size-discrepancy&&area<=size+discrepancy)
-			sort_main();
+				sort_main();
 			else
-			printf("Blob failed specifications\n");
+			{
+				printf("Blob failed specifications\n");
+				sort_sec();
+			}
 		}
 		else
 		{
+			sort_sec();
+			/*
 			if(mainColor==0)
 			area = get_object_area(1,0);
 			else
@@ -182,8 +188,9 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			sort_sec();
 			else
 			printf("Blob failed specifications\n");
+			*/
 		}
-		sort_mid();
+		//sort_mid();
 	}
 }
 //side programs
@@ -211,6 +218,9 @@ struct menuitem menu[]=
 
 int main()
 {
+	enable_servos();
+	camera_open(CAM_RES);
+	multicamupdate(5);
 	Get_Mode();
 	while(currstate!=s_END)
 	{
@@ -221,8 +231,6 @@ int main()
 		}
 		state(s_RAWSORT)
 		{
-			camera_open(CAM_RES);
-			enable_servos();
 			grab_poms();
 			//motor(MOT_LEFT,30);
 			//motor(MOT_RIGHT,35);
@@ -237,10 +245,9 @@ int main()
 			motor(MOT_RIGHT,0);
 			motor(MOT_LEFT,0);
 			forward(6);
-			servo_set(SERV_GRAB,1250,.3);
-			camera_open(CAM_RES);
+			set_servo_position(SERV_GRAB,1250);
+			msleep(300);
 			release_poms();
-			enable_servos();
 			next(s_CROSSFIELD);
 		}
 		state(s_CROSSFIELD)
