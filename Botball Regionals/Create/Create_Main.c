@@ -38,7 +38,7 @@ void create_arm(int position_of_servo1);
 void create_arm_default();
 
 
-
+//
 //#define MAIN
 #ifdef MAIN
 int main()
