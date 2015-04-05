@@ -8,7 +8,7 @@
 #define light_start_sensor 2 //random #, change later, light sensor not yet applied
 #define main_arm_servo_1 2	//KIPR flipped 2 and 3 on the servo ports
 #define main_arm_servo_2 3
-#define main_arm_pusher 1
+#define main_arm_pusher 1	//KIPR also flipped 0 and 1 on the servo ports
 #define claw_servo 0
 
 
@@ -20,7 +20,7 @@
 //#define main_arm_mid_servo_2 
 //#define main_arm_down_servo_2 
 
-#define pusher_down 2040
+#define pusher_down 2000
 #define pusher_push 1350
 
 #define claw_hold_cubes 475
@@ -69,9 +69,10 @@ void main()
 		//if (state == /*INSET STATE HERE*/) {
 			create_arm(main_arm_down_servo_1 - 50);	//to get above the cubes when turned towards them
 			set_servo_position(claw_servo, claw_open_regular);
-			set_servo_position(main_arm_pusher, pusher_down); // pusher for arm not interferring
+			set_servo_position(main_arm_pusher, pusher_down); // pusher for arm not interferring with the beginning servo positions 
 			start_function(light_start_sensor);
-		
+			
+			
 			msleep(100);
 			create_drive_direct_dist(-10, -10, -5);	//get off the wall
 			create_stop();
@@ -98,7 +99,7 @@ void main()
 			create_left(17, 0, 15);	//turn to face caldera
 		
 		
-			create_drive_direct_dist(-100, -100, -820);
+			create_drive_direct_dist(-100, -100, -820);	//drive to caldera
 			create_stop();
 			create_block();
 			msleep(500);
@@ -141,7 +142,7 @@ void create_move(int left_power, int right_power, int mm) {	//create moving forw
 	}
 }
 
-void create_turn_CW(int speed /* mm per second */, int degrees) {	//create turning in place clockwise
+void create_turn_CW(int speed /* mm per second */, int degrees) {	//create turning in place clockwises
 	create_spin_CW(speed);
 	set_create_normalized_angle(0);
 	while(get_create_normalized_angle() < -degrees) {
@@ -166,5 +167,3 @@ void create_arm_default() {
 	set_servo_position(main_arm_servo_1, main_arm_default);
 	//set_servo_position(main_arm_servo_2, (- main_arm_default) + main_arm_down_servo_1 + 100);
 }
-
-
