@@ -22,7 +22,7 @@ Value:
 */
 
 //Motors and servos
-#define SERV_SORT 1
+#define SERV_SORT 2
 #define SERV_SWEEP 0
 #define SERV_GRAB 3
 #define MOT_PICK 3
@@ -30,15 +30,16 @@ Value:
 
 //Position functions
 void sort_main(){set_servo_position(SERV_SORT,600);msleep(200);}
-void sort_sec(){set_servo_position(SERV_SORT,1050);msleep(200);}
+void sort_sec(){set_servo_position(SERV_SORT,1050);}
 //void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
 
-void grab_poms(){set_servo_position(SERV_GRAB,1460);msleep(200);}
+void grab_poms(){set_servo_position(SERV_GRAB,1410);msleep(200);}
 void release_poms(){set_servo_position(SERV_GRAB,2047);msleep(200);}
 
-void sweep_bump(){set_servo_position(SERV_SWEEP,1450);msleep(200);}
+void sweep_bump(){set_servo_position(SERV_SWEEP,1450);msleep(50);}
 void sweep_out(){set_servo_position(SERV_SWEEP,982);msleep(200);}
-void sweep_default(){set_servo_position(SERV_SWEEP,1750);msleep(200);}
+void sweep_out2(){set_servo_position(SERV_SWEEP,1082);msleep(100);}
+void sweep_default(){set_servo_position(SERV_SWEEP,1750);msleep(50);}
 /*void slow_servo(int servo,int pos)
 {
 	if(pos > get_servo_position(servo))
@@ -166,6 +167,9 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			}
 			last = get_motor_position_counter(MOT_PICK);
 			lastTest = curr_time();
+			sweep_bump();
+			msleep(50);
+			sweep_default();
 		}
 		//actual sorting
 		camera_update();
@@ -177,11 +181,11 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			{
 				sort_main();
 				printf("sorted");
-				motor(MOT_PICK,0);
-				msleep(250);
-				sweep_bump();
-				motor(MOT_PICK,SORT_SPEED);
-				sweep_default();
+				//motor(MOT_PICK,0);
+				//msleep(100);
+				//sweep_bump();
+				//motor(MOT_PICK,SORT_SPEED);
+				//sweep_default();
 			}
 			else
 			{
@@ -190,18 +194,40 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			}
 		}
 		else
+		{
 			sort_sec();
+			if(mainColor = 0)
+				area = get_object_area(1,0);
+			else
+				area = get_object_area(0,0);
+			if(area>500)
+			{
+				printf("Seen blob of secondary color\n");
+				if(area>=size-discrepancy&&area<=size+discrepancy)
+				{
+					msleep(50);
+					motor(MOT_PICK,0);
+					msleep(200);
+					motor(MOT_PICK,SORT_SPEED);
+					printf("sorted sec");
+				}
+			}
+		}
 	}
 }
 //side programs
 #define s_SQUAREUP 101
 #define s_RAWSORT 102
+#define s_SWEEP 103
+#define s_FORWARD 104
 
 //main programs
 #define s_START 1
 #define s_CROSSFIELD 2
 #define s_PILE1 3
 #define s_PILE2 4
+#define s_RETURNFIELD 5
+#define s_DUMPPOMS 6
 
 #define s_END 0
 
@@ -212,6 +238,8 @@ struct menuitem menu[]=
 	{s_PILE1,"Pile 1"},
 	{s_PILE2,"Pile 2"},
 	{s_SQUAREUP,"squareup"},
+	{s_SWEEP,"sweep"},
+	{s_FORWARD,"forward"},
 	{s_RAWSORT,"sorting"},
 	{s_END,"END"}
 	
@@ -256,6 +284,18 @@ int main()
 	Get_Mode();
 	while(currstate!=s_END)
 	{
+		state(s_FORWARD)
+		{
+			release_poms();
+			forward(100);
+		}
+		state(s_SWEEP)
+		{
+			sweep_default();
+			msleep(50);
+			sweep_out();
+			msleep(150);
+		}
 		state(s_SQUAREUP)
 		{
 			squareup(10);
@@ -263,7 +303,8 @@ int main()
 		}
 		state(s_RAWSORT)
 		{
-			thread_start(thread_create(cam_display));
+			release_poms();
+			//thread_start(thread_create(cam_display));
 			//grab_poms();
 			sort_main();
 			sort_sec();
@@ -289,21 +330,28 @@ int main()
 		}
 		state(s_CROSSFIELD)
 		{
-			left(5,0);
+			left(4.5,0);
 			forward(50);
 			grab_poms();
 			motor(MOT_PICK,40);
 			forward(30);
 			motor(MOT_PICK,0);
-			right(5,0);
+			right(4.5,0);
 			//motor(MOT_PICK,-30);
-			forward(110);
+			forward(104);
 			next(s_PILE1);
 		}
 		state(s_PILE1)
 		{
-			right(96,ks/2);
+			left(-87,ks/2);
+			//right(96,ks/2);
 			backward(75);
+			forward(10);
+			left(-88,ks/2);
+			backward(30);
+			forward(10);
+			left(88,ks/2);
+			backward(20);
 			//motor(MOT_LEFT,60);
 			//motor(MOT_RIGHT,63);
 			cam_sort(0,50,25,30,3);
@@ -312,10 +360,10 @@ int main()
 		}
 		state(s_PILE2)
 		{
-			backward(35);
-			forward(30);
+			backward(50);
+			forward(15);
 			right(88,0);
-			backward(10);
+			backward(20);
 			forward(65);
 			motor(MOT_PICK,-40);
 			grab_poms();
@@ -341,6 +389,14 @@ int main()
 			right(90,0);
 			forward(100);
 			next(s_END);
+		}
+		state(s_RETURNFIELD)
+		{
+			
+		}
+		state(s_DUMPPOMS)
+		{
+			
 		}
 		return 0;
 	}
