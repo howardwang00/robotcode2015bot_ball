@@ -6,8 +6,8 @@
 #include "newmenu.h"
 
 #define light_start_sensor 2 //random #, change later, light sensor not yet applied
-#define touch_1 1
-#define touch_2 2
+#define touch_1 15
+#define touch_2 14
 
 #define main_arm_servo_1 2	//KIPR flipped 2 and 3 on the servo ports
 //#define main_arm_servo_2 3
@@ -47,7 +47,10 @@ void create_arm(int position_of_servo1);
 
 void create_arm_default();
 
-void create_end_drive();
+void create_end_function();
+
+void create_squareup_wall(int power);
+
 
 /** ======================================================= STATE MENU ===================================================== **/
 
@@ -82,10 +85,10 @@ void main()
 			
 			msleep(100);
 			create_drive_direct_dist(-10, -10, -5);	//get off the wall
-			create_end_drive();
+			create_end_function();
 		
 			create_left(31, 0, 20); //turn to face cubes
-			create_end_drive();
+			create_end_function();
 			msleep(1000);
 			set_servo_position(claw_servo, claw_open_regular + 50);
 			msleep(300);
@@ -105,7 +108,7 @@ void main()
 		
 		
 			create_drive_direct_dist(-100, -100, -830);	//drive to caldera
-			create_end_drive();
+			create_end_function();
 			msleep(500);
 		
 			set_servo_position(claw_servo, claw_open_regular); //drop cubes
@@ -118,7 +121,7 @@ void main()
 #endif
 
 
-/** CREATE STARTS NEXT TO MESA, FACING OUTWARDS AFTER A SQUARE-UP **/
+/** CREATE STARTS IN BASE, FACING AWAY FROM THE MESA ABOUT TO DO A SQUARE-UP **/
 #define ARMSWEEP
 #ifdef ARMSWEEP
 void main()
@@ -129,22 +132,23 @@ void main()
 	start_function(light_start_sensor);
 	
 	//squaring up
+	create_squareup_wall(100);
 	msleep(100);
-	create_drive_direct_dist(30, 30, 50);
-	create_end_drive();
-	create_right(93, 0, 30);	//93 is 90 for create
-	create_end_drive();
-	create_drive_direct_dist(-20, -20, -50);
-	create_end_drive();
+	create_drive_direct_dist(100, 100, 50);
+	create_end_function();
+	create_right(90, 0, 100);	//93 is 90 for create
+	create_end_function();
+	create_squareup_wall(50);
+	create_end_function();
 	msleep(500);
 	
-	create_drive_direct_dist(30, 30, 50);
-	create_end_drive();
-	create_right(93, 0, 30);	//face the mesa
-	create_end_drive();
+	create_drive_direct_dist(100, 100, 50);
+	create_end_function();
+	create_right(90, 0, 100);	//face the mesa
+	create_end_function();
 	
 	create_drive_direct_dist(-200, -200, -550);
-	create_end_drive();
+	create_end_function();
 	
 	end_program();
 }
@@ -204,14 +208,50 @@ void create_arm_default() {
 	//set_servo_position(main_arm_servo_2, (- main_arm_default) + main_arm_down_servo_1 + 100);
 }
 
-void create_end_drive() {
+void create_end_function() {
 	create_stop();
 	create_block();
 }
 
-void create_squareup_wall() {
-	while ( digital(touch_1) != 1 || digital(touch_2) != 1) { //or because it's weird
-		create_drive_direct_dist(-20, -20, -10);
+void create_squareup_wall(int power) {
+	int i = (power/5);
+	if (power < 50) {
+		i = 0;
 	}
+	//int anti_wall_climb = 0;
+	/*
+	if (power > 50) {
+		i = - 10;
+	}
+	else if (power > 100) {
+		i = - 20;
+	}
+	else if (power > 150) {
+		i = - 30;
+	}
+	else if (power > 300) {
+		i = - 40;
+	}
+	*/
+	
+	
+	while ( digital(touch_1) != 1 && digital(touch_2) != 1) { //It uses and instead of or because it's weird
+		create_drive_direct_dist(-power, -power, -10);
+	}
+	
+	if ( digital(touch_1) == 1) {
+		while ( digital(touch_2) != 1) {
+			create_drive_direct_dist(-power, (power/2) + i, -10);
+		}
+	}
+	
+	else if ( digital(touch_2) == 1) {
+		while ( digital(touch_1) != 1) {
+			create_drive_direct_dist((power/2) + i, -power, -10);
+		}
+	}
+	
+	
+	create_drive_direct_dist(20, 20, 5);
 }
 
