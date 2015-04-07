@@ -241,13 +241,13 @@ void create_squareup_wall(int power) {
 	
 	if ( digital(touch_1) == 1) {
 		while ( digital(touch_2) != 1) {
-			create_drive_direct_dist(-power, (power/2) + i, -10);
+			create_drive_direct_dist( - (power/2), (power/4) + i, -10);
 		}
 	}
 	
 	else if ( digital(touch_2) == 1) {
 		while ( digital(touch_1) != 1) {
-			create_drive_direct_dist((power/2) + i, -power, -10);
+			create_drive_direct_dist((power/4) + i, - (power/2), -10);
 		}
 	}
 	
