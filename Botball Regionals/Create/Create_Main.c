@@ -5,6 +5,9 @@
 #include "generic.h"
 #include "newmenu.h"
 
+#define RED 0	//for camera
+#define GREEN 1
+
 #define light_start_sensor 2 //random #, change later, light sensor not yet applied
 #define touch_1 14	//flipped because I flipped my code
 #define touch_2 15
@@ -50,6 +53,10 @@ void create_arm(int position_of_servo1);
 void create_end_function();
 
 void create_squareup_wall(int power);
+
+void create_arm_drive();
+
+int create_track_botguy();
 
 
 /** ======================================================= STATE MENU ===================================================== **/
@@ -273,7 +280,31 @@ void create_squareup_wall(int power) {
 	create_drive_direct_dist(20, 20, 5);
 }
 
-create_arm_drive() {
+void create_arm_drive() {
 	set_servo_position(main_arm_pusher, pusher_hold);
 	create_arm(main_arm_drive);
 }
+
+int create_track_botguy()
+{
+	int area = 0;
+	float time = curr_time();
+	while(time+3>curr_time())
+	{
+		camera_update();
+		area = get_object_area(RED,0);
+		if(area>500)
+		{
+			printf("Seen Blob of Red color\n");
+			return RED;
+		}
+		area = get_object_area(GREEN,0);
+		if(area>500)
+		{
+			printf("Seen Blob of Green color\n");
+			return GREEN;
+		}
+	}
+}
+
+
