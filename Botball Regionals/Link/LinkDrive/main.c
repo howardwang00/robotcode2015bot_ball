@@ -35,6 +35,7 @@ void sort_sec(){set_servo_position(SERV_SORT,1050);}
 
 void grab_poms(){set_servo_position(SERV_GRAB,1410);msleep(200);}
 void release_poms(){set_servo_position(SERV_GRAB,2047);msleep(200);}
+void bump_poms(){set_servo_position(SERV_GRAB,1510);msleep(50);set_servo_position(SERV_GRAB,1410);}
 
 void sweep_bump(){set_servo_position(SERV_SWEEP,1450);msleep(50);}
 void sweep_out(){set_servo_position(SERV_SWEEP,982);msleep(200);}
@@ -59,8 +60,8 @@ void sweep_default(){set_servo_position(SERV_SWEEP,1750);msleep(50);}
 		}
 	}
 }*/
-void bump_poms()
-{
+//void bump_poms()
+//{
 	/*set_servo_position(SERV_GRAB,1500);
 	msleep(200);*/
 	//set_servo_position(SERV_GRAB,800);
@@ -71,7 +72,7 @@ void bump_poms()
 	WAIT(5*CMtoBEMF<=gmpc(MOT_RIGHT)&&5*CMtoBEMF<=gmpc(MOT_LEFT))
 	motor(MOT_RIGHT,0);
 	motor(MOT_LEFT,0);*/
-}
+//}
 
 //Currently not in use. No touch sensors to use with.
 void squareup(int max_time)
@@ -114,6 +115,8 @@ time: the duration for which this program runs, in seconds.
 */
 void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 {
+	motor(MOTOR_PICK,-SORT_SPEED);
+	msleep(300);
 	//initialization process
 	if(size<0||size>100) 
 	printf("Warning: Size is out of the specified range!\n");
@@ -156,7 +159,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 		//failsafe
 		if(lastTest+2<=curr_time())
 		{
-			//bump_poms();
+			bump_poms();
 			forward(2);
 			if(jamDist>(get_motor_position_counter(MOT_PICK)-last))
 			{
@@ -214,6 +217,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			}
 		}
 	}
+	motor(MOT_PICK,0);
 }
 //side programs
 #define s_SQUAREUP 101
@@ -276,10 +280,10 @@ void cam_display()
 int main()
 {
 	enable_servos();
+	sort_sec();
 	camera_open(CAM_RES);
 	multicamupdate(5);
 	sweep_default();
-	sort_sec();
 	set_servo_position(SERV_GRAB,929);
 	Get_Mode();
 	while(currstate!=s_END)
@@ -316,6 +320,7 @@ int main()
 		}
 		state(s_START)
 		{
+			shut_down_in(119);
 			release_poms();
 			motor(MOT_LEFT,-70);
 			motor(MOT_RIGHT,-70);
@@ -324,52 +329,54 @@ int main()
 			//motor(MOT_LEFT,0);
 			forward(6);
 			//set_servo_position(SERV_GRAB,1250);
-			msleep(300);
+			//msleep(300);
 			release_poms();
 			next(s_CROSSFIELD);
 		}
 		state(s_CROSSFIELD)
 		{
-			left(4.5,0);
+			//left(4,0);
 			forward(50);
 			grab_poms();
 			motor(MOT_PICK,40);
 			forward(30);
 			motor(MOT_PICK,0);
-			right(4.5,0);
+			//right(4,0);
 			//motor(MOT_PICK,-30);
 			forward(104);
 			next(s_PILE1);
 		}
 		state(s_PILE1)
 		{
-			left(-87,ks/2);
+			left(-88,ks/2);
 			//right(96,ks/2);
 			backward(75);
-			forward(10);
+			forward(40);
 			left(-88,ks/2);
-			backward(30);
+			backward(40);
 			forward(10);
 			left(88,ks/2);
-			backward(20);
+			//backward(50);
 			//motor(MOT_LEFT,60);
 			//motor(MOT_RIGHT,63);
+			//forward(20);
 			cam_sort(0,50,25,30,3);
 			release_poms();
 			next(s_PILE2);
 		}
 		state(s_PILE2)
 		{
-			backward(50);
+			backward(80);
 			forward(15);
 			right(88,0);
 			backward(20);
 			forward(65);
-			motor(MOT_PICK,-40);
+			//motor(MOT_PICK,-40);
 			grab_poms();
-			backward(60);
-			left(88,0);
-			release_poms();
+			backward(80);
+			forward(20);
+			left(88,ks/2);
+			//release_poms();
 			//right(105,46);
 			/*motor(MOT_LEFT,-70);
 			motor(MOT_RIGHT,-70);
@@ -380,23 +387,39 @@ int main()
 			right(180,0);*/
 			//motor(MOT_LEFT,40);
 			//motor(MOT_RIGHT,55);
-			cam_sort(0,50,30,50,3);
-			forward(240);
-			left(135,0);
+			/*backward(70);
+			forward(20);
+			left(-88,ks/2);
+			backward(30);
+			forward(10);
+			left(88,ks/2);*/
+			backward(30);
+			cam_sort(0,50,25,30,3);
+			//forward(240);
+			/*left(135,0);
 			forward(120);
 			right(45,0);
 			forward(30);
 			right(90,0);
 			forward(100);
-			next(s_END);
+			next(s_END);*/
+			next(s_RETURNFIELD);
 		}
 		state(s_RETURNFIELD)
 		{
-			
+			right(88,0);
+			backward(30);
+			forward(220);
+			right(88,0);
+			next(s_DUMPPOMS);
 		}
 		state(s_DUMPPOMS)
 		{
-			
+			sweep_out();
+			msleep(150);
+			sweep_out2();
+			sweep_out();
+			next(s_END);
 		}
 		return 0;
 	}
