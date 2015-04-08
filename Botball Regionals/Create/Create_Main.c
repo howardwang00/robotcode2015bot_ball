@@ -27,8 +27,8 @@
 //#define main_arm_mid_servo_2 
 //#define main_arm_down_servo_2 
 
-#define pusher_down 2000
-#define pusher_push 1350
+#define pusher_down 250
+#define pusher_push 725
 #define pusher_shove 1250 //pushing arm up all the way
 #define pusher_hold 1450 // holding up arm while driving
 
@@ -289,7 +289,7 @@ int create_track_botguy()
 {
 	int area = 0;
 	float time = curr_time();
-	while(time+3>curr_time())
+	while(time + 3 > curr_time())
 	{
 		camera_update();
 		area = get_object_area(RED,0);
