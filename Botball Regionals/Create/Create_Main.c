@@ -6,7 +6,7 @@
 #include "newmenu.h"
 
 #define light_start_sensor 2 //random #, change later, light sensor not yet applied
-#define touch_1 14
+#define touch_1 14	//flipped because I flipped my code
 #define touch_2 15
 
 #define main_arm_servo_1 2	//KIPR flipped 2 and 3 on the servo ports
@@ -26,7 +26,8 @@
 
 #define pusher_down 2000
 #define pusher_push 1350
-#define puhser_hold 1624 // holding up arm while driving
+#define pusher_shove 1250 //pushing arm up all the way
+#define pusher_hold 1450 // holding up arm while driving
 
 #define claw_hold_cubes 475
 #define claw_open_regular 700	//when the claw is not holding anything
@@ -128,41 +129,43 @@ void main()
 {
 	create_arm_drive();
 	set_servo_position(claw_servo, claw_open_regular);
-	set_servo_position(main_arm_pusher, pusher_down); // pusher for arm not interferring with the beginning servo positions 
 	start_function(light_start_sensor);
 	
 	//squaring up
 	create_squareup_wall(100);
 	msleep(100);
 	create_drive_direct_dist(100, 100, 50);
-	create_right(90, 0, 100);	//93 is 90 for create
+	create_right(90, 0, 100);
 	create_end_function();
 	create_squareup_wall(50);
 	create_end_function();
 	msleep(500);
 	
-	create_drive_direct_dist(100, 100, 50);
+	create_drive_direct_dist(100, 100, 30);
 	create_right(90, 0, 100);	//face the mesa
 	
-	create_drive_direct_dist(-200, -200, -550);	//go to mesa
-	create_left(90, 0, 100);
+	create_drive_direct_dist(-200, -200, -600);	//go to mesa
+	create_right(89, 0, 100);
 	create_end_function();
-	create_squareup_wall(100);
-	create_end_function();
-	
-	create_right(180, 0, 100);
-	create_backward(20, 50);
-	create_end_function();
+	msleep(100);
 	
 	set_servo_position(claw_servo, claw_hold_cubes);	//so it doesn't hit the mesa
 	msleep(100);
+	
+	//for momentum
+	set_servo_position(main_arm_pusher, pusher_down);
+	create_arm(main_arm_down_servo_1);
+	msleep(500);
+	
+	set_servo_position(main_arm_pusher, pusher_shove);
 	create_arm(main_arm_mesa_behind);
-	msleep(300);
+	msleep(1000);
+	set_servo_position(main_arm_pusher, pusher_hold);	//go back
 	set_servo_position(claw_servo, claw_sweep);
 	printf("Ready to Sweep!");
 	msleep(300);
 	
-	create_backward(500, 50);
+	create_backward(550, 50);
 	create_end_function();
 	
 	
@@ -266,11 +269,11 @@ void create_squareup_wall(int power) {
 		}
 	}
 	
-	
+	create_end_function();
 	create_drive_direct_dist(20, 20, 5);
 }
 
 create_arm_drive() {
-	create_arm(main_arm_drive);
 	set_servo_position(main_arm_pusher, pusher_hold);
+	create_arm(main_arm_drive);
 }
