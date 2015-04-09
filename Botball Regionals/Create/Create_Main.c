@@ -21,7 +21,7 @@
 #define main_arm_up_servo_1 950
 #define main_arm_mesa_forward 1200	//on top of mesa bulldozing in front
 #define main_arm_mesa_behind 625	//on top of mesa bulldozing behind
-#define main_arm_down_servo_1 1450	//picking up cubes 
+#define main_arm_down_servo_1 1500	//picking up cubes 
 #define main_arm_drive 1375
 //#define main_arm_up_servo_2 
 //#define main_arm_mid_servo_2 
@@ -79,87 +79,64 @@ struct menuitem menu[]= {
 
 /** ===================================================== END STATE MENU ===================================================== **/
 
-//#define MAIN
+#define MAIN
 #ifdef MAIN
 void main()
 {
-	//while (currstate !
-		//if (state == /*INSET STATE HERE*/) {
-			create_arm(main_arm_down_servo_1 - 50);	//to get above the cubes when turned towards them
-			set_servo_position(claw_servo, claw_open_regular);
-			set_servo_position(main_arm_pusher, pusher_down); // pusher for arm not interferring with the beginning servo positions 
-			start_function(light_start_sensor);
-			
-			
-			msleep(100);
-			create_drive_direct_dist(-10, -10, -5);	//get off the wall
-			create_end_function();
-		
-			create_left(31, 0, 20); //turn to face cubes
-			create_end_function();
-			msleep(1000);
-			set_servo_position(claw_servo, claw_open_regular + 50);
-			msleep(300);
-			
-			
-			create_arm(main_arm_down_servo_1);
-			msleep(500);
-			set_servo_position(claw_servo, claw_hold_cubes);
-			msleep(700);
-			create_arm(main_arm_up_servo_1);
-			msleep(1); // make sure there is a stop in between
-			set_servo_position(main_arm_pusher, pusher_push);
-			msleep(1000);
-			set_servo_position(main_arm_pusher, pusher_down);
-			msleep(1000);
-			create_left(17, 0, 15);	//turn to face caldera
-		
-		
-			create_drive_direct_dist(-100, -100, -830);	//drive to caldera
-			create_end_function();
-			msleep(500);
-		
-			set_servo_position(claw_servo, claw_open_regular); //drop cubes
-			msleep(500);
-		//}
 	
-	
-	end_program();
-	//return 0; //It is a void main
-}
-#endif
-
-
-/** CREATE STARTS IN BASE, FACING AWAY FROM THE MESA ABOUT TO DO A SQUARE-UP **/
-#define ARMSWEEP
-#ifdef ARMSWEEP
-void main()
-{
-	create_arm(main_arm_down_servo_1 - 50);	//to get above the cubes when turned towards them
+	create_arm(main_arm_down_servo_1 - 25);	//to get above the cubes when turned towards them
 	set_servo_position(claw_servo, claw_open_regular);
-	set_servo_position(main_arm_pusher, pusher_down); // pusher for arm not interferring with the beginning servo positions 
+	set_servo_position(main_arm_pusher, pusher_down + 600);	//help push the arm up
 	start_function(light_start_sensor);
+	
 	
 	msleep(100);
 	create_drive_direct_dist(-10, -10, -5);	//get off the wall
 	create_end_function();
 	
-	create_left(31, 0, 20); //turn to face cubes
+	set_servo_position(claw_servo, claw_open_regular + 200);
+	msleep(300);
+
+	create_left(31, 0, 50); //turn to face cubes
 	create_end_function();
 	msleep(1000);
-	set_servo_position(claw_servo, claw_open_regular + 50);
-	msleep(300);	
 	
+	set_servo_position(main_arm_pusher, pusher_down);	// pusher for arm not interferring with the beginning servo positions
 	create_arm(main_arm_down_servo_1);
 	msleep(500);
 	set_servo_position(claw_servo, claw_hold_cubes);
-	msleep(700);
-	create_arm(main_arm_up_servo_1);
-	msleep(1); // make sure there is a stop in between
-	set_servo_position(main_arm_pusher, pusher_push);
 	msleep(1000);
-	set_servo_position(main_arm_pusher, pusher_down);
+	set_servo_position(main_arm_pusher, pusher_shove);
+	create_arm(main_arm_up_servo_1);
+	msleep(1000);
 	
+	create_left(20, 0, 30);	//turn to face mesa to drop cubes next to mesa
+	create_drive_direct_dist(-100, -100, -780);	//drive to mesa
+	create_end_function();
+	
+	set_servo_position(claw_servo, claw_open_regular);
+	msleep(500);
+	create_arm(main_arm_mesa_behind);	//so we won't hit botgal/pod
+	create_left(45, 0, 50); //face botgal/pod
+	create_end_function();
+	
+	create_arm(main_arm_up_servo_1);
+	msleep(500);
+	set_servo_position(claw_servo, claw_hold_botguy);
+	
+	msleep(1000);
+	
+	
+	end_program();
+}
+#endif
+
+
+/** CREATE STARTS IN BASE, FACING AWAY FROM THE MESA ABOUT TO DO A SQUARE-UP **/
+//#define ARMSWEEP
+#ifdef ARMSWEEP
+void main()
+{
 	create_arm_drive();
 	set_servo_position(claw_servo, claw_open_regular);
 	start_function(light_start_sensor);
