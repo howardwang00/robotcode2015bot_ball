@@ -19,23 +19,23 @@
 
 
 #define main_arm_up_servo_1 950
-#define main_arm_mesa_forward 1160	//on top of mesa bulldozing in front
-#define main_arm_mesa_behind 790	//on top of mesa bulldozing behind
-#define main_arm_down_servo_1 1550	//picking up cubes 
-#define main_arm_drive 1325
+#define main_arm_mesa_forward 1200	//on top of mesa bulldozing in front
+#define main_arm_mesa_behind 625	//on top of mesa bulldozing behind
+#define main_arm_down_servo_1 1450	//picking up cubes 
+#define main_arm_drive 1375
 //#define main_arm_up_servo_2 
 //#define main_arm_mid_servo_2 
 //#define main_arm_down_servo_2 
 
-#define pusher_down 250
+#define pusher_down 0
 #define pusher_push 725
 #define pusher_shove 1250 //pushing arm up all the way
-#define pusher_hold 1450 // holding up arm while driving
+#define pusher_hold 625 // holding up arm while driving
 
 #define claw_hold_cubes 475
 #define claw_open_regular 700	//when the claw is not holding anything
 #define claw_hold_botguy 340	//holding botguy
-#define claw_sweep 1400
+#define claw_sweep 1350
 
 
 void start_function(int light_start_port_for_function_start); //function to start the robot
@@ -58,6 +58,7 @@ void create_arm_drive();
 
 int create_track_botguy();
 
+void create_squareup_rightangle(int first_speed, int second_speed);
 
 /** ======================================================= STATE MENU ===================================================== **/
 
@@ -138,43 +139,63 @@ void main()
 	set_servo_position(claw_servo, claw_open_regular);
 	start_function(light_start_sensor);
 	
-	//squaring up
-	create_squareup_wall(100);
-	msleep(100);
-	create_drive_direct_dist(100, 100, 50);
-	create_right(90, 0, 100);
-	create_end_function();
-	create_squareup_wall(50);
-	create_end_function();
-	msleep(500);
+	create_squareup_rightangle(100, 50);
 	
-	create_drive_direct_dist(100, 100, 30);
-	create_right(90, 0, 100);	//face the mesa
-	
-	create_drive_direct_dist(-200, -200, -600);	//go to mesa
-	create_right(89, 0, 100);
-	create_end_function();
-	msleep(100);
+	create_right(81, 0, 100);	//face the mesa
 	
 	set_servo_position(claw_servo, claw_hold_cubes);	//so it doesn't hit the mesa
 	msleep(100);
 	
-	//for momentum
+	//for momentum, so that the arm will have more time to accelerate
 	set_servo_position(main_arm_pusher, pusher_down);
 	create_arm(main_arm_down_servo_1);
 	msleep(500);
 	
 	set_servo_position(main_arm_pusher, pusher_shove);
-	create_arm(main_arm_mesa_behind);
+	create_arm(main_arm_up_servo_1 - 100);
 	msleep(1000);
+	
+	create_drive_direct_dist(-200, -200, -750);	//go to mesa
+	create_drive_direct_dist(-100, -100, -120);
+	create_right(96, 0, 100);
+	create_end_function();
+	msleep(500);
+	
+	create_arm(main_arm_mesa_behind + 100);
+	msleep(100);
 	set_servo_position(main_arm_pusher, pusher_hold);	//go back
 	set_servo_position(claw_servo, claw_sweep);
 	printf("Ready to Sweep!");
 	msleep(300);
 	
-	create_backward(550, 50);
+	create_backward(50, 50);
+	msleep(100);
+	create_arm(main_arm_mesa_behind);
+	create_backward(500, 50);
 	create_end_function();
 	
+	create_forward(500, 100);
+	create_end_function();
+	
+	create_arm(main_arm_mesa_forward - 200);
+	msleep(1000);
+	create_arm(main_arm_mesa_forward);
+	msleep(100);
+	
+	create_backward(200, 75);
+	create_end_function();
+	
+	set_servo_position(claw_servo, claw_open_regular - 50);	//push stuff into claw range
+	msleep(500);
+	set_servo_position(claw_servo, claw_sweep);
+	
+	create_right(3, 0, 10);
+	create_backward(270, 50);
+	create_end_function();
+	
+	set_servo_position(claw_servo, claw_open_regular);	//push stuff in
+	msleep(1000);
+	set_servo_position(claw_servo, claw_sweep);
 	
 	end_program();
 }
@@ -277,6 +298,7 @@ void create_squareup_wall(int power) {
 	}
 	
 	create_end_function();
+	msleep(100);
 	create_drive_direct_dist(20, 20, 5);
 }
 
@@ -293,13 +315,13 @@ int create_track_botguy()
 	{
 		camera_update();
 		area = get_object_area(RED,0);
-		if(area>500)
+		if(area > 500)
 		{
 			printf("Seen Blob of Red color\n");
 			return RED;
 		}
 		area = get_object_area(GREEN,0);
-		if(area>500)
+		if(area > 500)
 		{
 			printf("Seen Blob of Green color\n");
 			return GREEN;
@@ -307,4 +329,17 @@ int create_track_botguy()
 	}
 }
 
-
+void create_squareup_rightangle(int first_speed, int second_speed) {
+	//squaring up
+	create_squareup_wall(first_speed);
+	msleep(100);
+	//create_drive_direct_dist(100, 100, 50);
+	create_right(85, 0, 100);
+	create_end_function();
+	create_squareup_wall(second_speed);
+	msleep(100);
+	create_end_function();
+	msleep(500);
+	
+	create_drive_direct_dist(100, 100, 10);
+}
