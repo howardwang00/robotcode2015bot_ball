@@ -135,6 +135,31 @@ void main()
 #ifdef ARMSWEEP
 void main()
 {
+	create_arm(main_arm_down_servo_1 - 50);	//to get above the cubes when turned towards them
+	set_servo_position(claw_servo, claw_open_regular);
+	set_servo_position(main_arm_pusher, pusher_down); // pusher for arm not interferring with the beginning servo positions 
+	start_function(light_start_sensor);
+	
+	msleep(100);
+	create_drive_direct_dist(-10, -10, -5);	//get off the wall
+	create_end_function();
+	
+	create_left(31, 0, 20); //turn to face cubes
+	create_end_function();
+	msleep(1000);
+	set_servo_position(claw_servo, claw_open_regular + 50);
+	msleep(300);	
+	
+	create_arm(main_arm_down_servo_1);
+	msleep(500);
+	set_servo_position(claw_servo, claw_hold_cubes);
+	msleep(700);
+	create_arm(main_arm_up_servo_1);
+	msleep(1); // make sure there is a stop in between
+	set_servo_position(main_arm_pusher, pusher_push);
+	msleep(1000);
+	set_servo_position(main_arm_pusher, pusher_down);
+	
 	create_arm_drive();
 	set_servo_position(claw_servo, claw_open_regular);
 	start_function(light_start_sensor);
