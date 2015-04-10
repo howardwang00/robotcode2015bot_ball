@@ -18,10 +18,10 @@
 #define claw_servo 0
 
 
-#define main_arm_up_servo_1 950
+#define main_arm_up_servo_1 900
 #define main_arm_mesa_forward 1200	//on top of mesa bulldozing in front
 #define main_arm_mesa_behind 625	//on top of mesa bulldozing behind
-#define main_arm_down_servo_1 1500	//picking up cubes 
+#define main_arm_down_servo_1 1525	//picking up cubes 
 #define main_arm_drive 1375
 //#define main_arm_up_servo_2 
 //#define main_arm_mid_servo_2 
@@ -29,12 +29,13 @@
 
 #define pusher_down 0
 #define pusher_push 725
-#define pusher_shove 1250 //pushing arm up all the way
+#define pusher_shove 1225 //pushing arm up all the way
 #define pusher_hold 625 // holding up arm while driving
+#define pusher_behind 1475	//push the arm back so it can lift botguy
 
 #define claw_hold_cubes 475
 #define claw_open_regular 700	//when the claw is not holding anything
-#define claw_hold_botguy 340	//holding botguy
+#define claw_hold_botguy 320	//holding botguy
 #define claw_sweep 1350
 
 
@@ -97,35 +98,49 @@ void main()
 	set_servo_position(claw_servo, claw_open_regular + 200);
 	msleep(300);
 
-	create_left(31, 0, 50); //turn to face cubes
+	create_left(31, 0, 75); //turn to face cubes
 	create_end_function();
 	msleep(1000);
 	
 	set_servo_position(main_arm_pusher, pusher_down);	// pusher for arm not interferring with the beginning servo positions
 	create_arm(main_arm_down_servo_1);
-	msleep(500);
+	msleep(800);
 	set_servo_position(claw_servo, claw_hold_cubes);
-	msleep(1000);
+	msleep(800);
 	set_servo_position(main_arm_pusher, pusher_shove);
-	create_arm(main_arm_up_servo_1);
-	msleep(1000);
+	create_arm(main_arm_up_servo_1 - 50);
+	msleep(500);
 	
-	create_left(20, 0, 30);	//turn to face mesa to drop cubes next to mesa
-	create_drive_direct_dist(-100, -100, -780);	//drive to mesa
+	create_left(25, 0, 30);	//turn to face mesa to drop cubes next to mesa
+	create_drive_direct_dist(-150, -150, -700);	//drive to mesa
+	create_drive_direct_dist(-50, -50, -125);	//go slower
 	create_end_function();
+	msleep(100);
 	
 	set_servo_position(claw_servo, claw_open_regular);
 	msleep(500);
 	create_arm(main_arm_mesa_behind);	//so we won't hit botgal/pod
-	create_left(45, 0, 50); //face botgal/pod
+	create_left(47, 0, 75); //face botgal/pod
+	create_backward(100, 75);	//get close to botguy
 	create_end_function();
 	
+	create_arm(main_arm_up_servo_1 - 100);
+	msleep(300);
 	create_arm(main_arm_up_servo_1);
 	msleep(500);
 	set_servo_position(claw_servo, claw_hold_botguy);
-	
 	msleep(1000);
 	
+	set_servo_position(main_arm_pusher, pusher_behind);	//push the arm up and keep it there
+	create_arm(main_arm_mesa_behind);
+	msleep(500);
+	
+	create_forward(50, 50);
+	create_end_function();
+	
+	set_servo_position(main_arm_pusher, pusher_shove);
+	
+	msleep(2000);
 	
 	end_program();
 }
