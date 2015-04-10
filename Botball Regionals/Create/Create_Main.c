@@ -80,7 +80,7 @@ struct menuitem menu[]= {
 
 /** ===================================================== END STATE MENU ===================================================== **/
 
-#define MAIN
+//#define MAIN
 #ifdef MAIN
 void main()
 {
@@ -96,7 +96,7 @@ void main()
 	create_end_function();
 	
 	set_servo_position(claw_servo, claw_open_regular + 200);
-	msleep(300);
+	msleep(500);
 
 	create_left(31, 0, 75); //turn to face cubes
 	create_end_function();
@@ -218,6 +218,21 @@ void main()
 }
 #endif
 
+#define BOTGUY_TRACK
+#ifdef BOTGUY_TRACK
+void main() {
+	set_servo_position(main_arm_pusher, pusher_behind);	//push the arm up and keep it there
+	create_arm(main_arm_mesa_behind);
+	set_servo_position(claw_servo, claw_hold_botguy);
+	start_function(light_start_sensor);
+	
+	create_track_botguy();
+	
+	msleep(1000);
+	
+}
+#endif
+
 /** =====================================================			FUNCTIONS			==================================================== **/
 
 
@@ -273,27 +288,6 @@ void create_end_function() {
 }
 
 void create_squareup_wall(int power) {
-	/*
-	int i = (power/5);
-	if (power < 50) {
-		i = 0;
-	}
-	//int anti_wall_climb = 0;
-	/*
-	if (power > 50) {
-		i = - 10;
-	}
-	else if (power > 100) {
-		i = - 20;
-	}
-	else if (power > 150) {
-		i = - 30;
-	}
-	else if (power > 300) {
-		i = - 40;
-	}
-	*/
-	
 	
 	while ( digital(touch_1) != 1 && digital(touch_2) != 1) { //It uses and instead of or because it's weird
 		create_drive_direct(-power, -power);
