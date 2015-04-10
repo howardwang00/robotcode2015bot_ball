@@ -33,13 +33,13 @@ void sort_main(){set_servo_position(SERV_SORT,600);msleep(200);}
 void sort_sec(){set_servo_position(SERV_SORT,1050);}
 //void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
 
-void grab_poms(){set_servo_position(SERV_GRAB,1410);msleep(200);}
+void grab_poms(){set_servo_position(SERV_GRAB,1490);msleep(200);set_servo_position(SERV_GRAB,1410);}
 void release_poms(){set_servo_position(SERV_GRAB,2047);msleep(200);}
-void bump_poms(){set_servo_position(SERV_GRAB,1510);msleep(50);set_servo_position(SERV_GRAB,1410);}
+void bump_poms(){set_servo_position(SERV_GRAB,1510);msleep(10);set_servo_position(SERV_GRAB,1410);}
 
 void sweep_bump(){set_servo_position(SERV_SWEEP,1450);msleep(50);}
 void sweep_out(){set_servo_position(SERV_SWEEP,982);msleep(200);}
-void sweep_out2(){set_servo_position(SERV_SWEEP,1082);msleep(100);}
+void sweep_out2(){set_servo_position(SERV_SWEEP,1182);msleep(100);}
 void sweep_default(){set_servo_position(SERV_SWEEP,1750);msleep(50);}
 /*void slow_servo(int servo,int pos)
 {
@@ -115,8 +115,8 @@ time: the duration for which this program runs, in seconds.
 */
 void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 {
-	motor(MOTOR_PICK,-SORT_SPEED);
-	msleep(300);
+	motor(MOT_PICK,-SORT_SPEED);
+	msleep(500);
 	//initialization process
 	if(size<0||size>100) 
 	printf("Warning: Size is out of the specified range!\n");
@@ -152,15 +152,22 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 	float startTime = curr_time();
 	int area = 0;
 	int last = get_motor_position_counter(MOT_PICK);
+	int alt = 0;
 	motor(MOT_PICK,SORT_SPEED);
 	//Sorting process
 	while(startTime+time>=curr_time())	//Timekeeper
 	{
 		//failsafe
-		if(lastTest+2<=curr_time())
+		if(lastTest+1<=curr_time())
 		{
-			bump_poms();
-			forward(2);
+			if(alt == 1)
+			{
+				bump_poms();
+				forward(2);
+				alt = 0;
+			}
+			else
+				alt = 1;
 			if(jamDist>(get_motor_position_counter(MOT_PICK)-last))
 			{
 				motor(MOT_PICK,-90);
@@ -208,10 +215,10 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 				printf("Seen blob of secondary color\n");
 				if(area>=size-discrepancy&&area<=size+discrepancy)
 				{
-					msleep(50);
-					motor(MOT_PICK,0);
-					msleep(200);
-					motor(MOT_PICK,SORT_SPEED);
+					//msleep(50);
+					//motor(MOT_PICK,0);
+					//msleep(200);
+					//motor(MOT_PICK,SORT_SPEED);
 					printf("sorted sec");
 				}
 			}
@@ -232,6 +239,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 #define s_PILE2 4
 #define s_RETURNFIELD 5
 #define s_DUMPPOMS 6
+#define s_PILEALT 7
 
 #define s_END 0
 
@@ -330,7 +338,7 @@ int main()
 			forward(6);
 			//set_servo_position(SERV_GRAB,1250);
 			//msleep(300);
-			release_poms();
+			//release_poms();
 			next(s_CROSSFIELD);
 		}
 		state(s_CROSSFIELD)
@@ -344,7 +352,31 @@ int main()
 			//right(4,0);
 			//motor(MOT_PICK,-30);
 			forward(104);
-			next(s_PILE1);
+			next(s_PILEALT);
+		}
+		state(s_PILEALT)
+		{
+			left(176,ks/2);
+			backward(40);
+			cam_sort(0,50,25,15,2);
+			backward(30);
+			cam_sort(0,50,25,10,2);
+			left(80,0);
+			//backward(50);
+			/*
+			right(90,0);
+			release_poms();
+			forward(33);
+			right(84,ks/2);
+			forward(30);
+			grab_poms();
+			left(88,ks/2);
+			backward(80);
+			forward(20);
+			left(88,ks/2);
+			backward(30);
+			cam_sort(0,50,25,30,3);*/
+			next(s_PILE2);
 		}
 		state(s_PILE1)
 		{
@@ -360,16 +392,17 @@ int main()
 			//motor(MOT_LEFT,60);
 			//motor(MOT_RIGHT,63);
 			//forward(20);
-			cam_sort(0,50,25,30,3);
+			cam_sort(0,50,25,30,2);
 			release_poms();
 			next(s_PILE2);
 		}
 		state(s_PILE2)
 		{
-			backward(80);
+			backward(70);
 			forward(15);
 			right(88,0);
-			backward(20);
+			backward(40);
+			release_poms();
 			forward(65);
 			//motor(MOT_PICK,-40);
 			grab_poms();
@@ -393,8 +426,8 @@ int main()
 			backward(30);
 			forward(10);
 			left(88,ks/2);*/
-			backward(30);
-			cam_sort(0,50,25,30,3);
+			backward(40);
+			cam_sort(0,50,25,30,2);
 			//forward(240);
 			/*left(135,0);
 			forward(120);
@@ -407,9 +440,11 @@ int main()
 		}
 		state(s_RETURNFIELD)
 		{
-			right(88,0);
-			backward(30);
-			forward(220);
+			backward(80);
+			forward(10);
+			right(67,0);
+			//backward(50);
+			forward(180);
 			right(88,0);
 			next(s_DUMPPOMS);
 		}
@@ -417,6 +452,8 @@ int main()
 		{
 			sweep_out();
 			msleep(150);
+			sweep_out2();
+			sweep_out();
 			sweep_out2();
 			sweep_out();
 			next(s_END);
