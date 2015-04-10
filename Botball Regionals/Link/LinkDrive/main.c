@@ -318,7 +318,7 @@ int main()
 			sweep_out();
 			next(s_END);
 		}
-		state(s_START)
+		state(s_START) // start, cross field, then pile1 and pile2, returnfield, dumpPoms and end
 		{
 			shut_down_in(119);
 			release_poms();
