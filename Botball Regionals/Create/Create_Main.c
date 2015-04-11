@@ -7,6 +7,7 @@
 
 #define RED 0	//for camera
 #define GREEN 1
+#define NOTHING 234234234234234	//random #
 
 #define light_start_sensor 2 //random #, change later, light sensor not yet applied
 #define touch_1 14	//flipped because I flipped my code
@@ -226,10 +227,13 @@ void main() {
 	set_servo_position(claw_servo, claw_hold_botguy);
 	start_function(light_start_sensor);
 	
+	msleep(100);
+	
 	create_track_botguy();
 	
-	msleep(1000);
+	msleep(10000);
 	
+	end_program();
 }
 #endif
 
@@ -320,23 +324,26 @@ void create_arm_drive() {
 
 int create_track_botguy()
 {
-	int area = 0;
+	int area;
 	float time = curr_time();
 	while(time + 3 > curr_time())
 	{
 		camera_update();
 		area = get_object_area(RED,0);
-		if(area > 500)
+		if (area > 500)
 		{
 			printf("Seen Blob of Red color\n");
 			return RED;
 		}
 		area = get_object_area(GREEN,0);
-		if(area > 500)
+		if (area > 500)
 		{
 			printf("Seen Blob of Green color\n");
 			return GREEN;
 		}
+		
+		printf("Saw nothing :(((((((( !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		return NOTHING;
 	}
 }
 
