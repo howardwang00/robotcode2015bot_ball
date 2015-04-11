@@ -2,7 +2,7 @@
 
                                         2015 bot_ball code for Team 15-0636
 
-Manan's descriptioin:
+Manan's description:
 Robot Code for the 2015 competition.
 
     The Regionals 2015 folder stores our code for the Regional Competition
@@ -14,10 +14,3 @@ How to Contribute
     If you're not currently a contributor: Fork this Repository: fork either the main or development branches to your account  and make proposed changes
     Send a Pull Request: we'll review the changes and merge them if applicable
 =======
-2015 bot_ball code
-
-Hey everyone! This is Nikko  XD
-
-Tip: This code can still be viewed by typing 'bot ball' in the search
-
-Noah was here!
