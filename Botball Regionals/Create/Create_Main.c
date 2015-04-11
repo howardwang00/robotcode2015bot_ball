@@ -7,7 +7,7 @@
 
 #define RED 0	//for camera
 #define GREEN 1
-#define NOTHING 234234234234234	//random #
+#define NOTHING 234234234	//random #
 
 #define light_start_sensor 2 //random #, change later, light sensor not yet applied
 #define touch_1 14	//flipped because I flipped my code
