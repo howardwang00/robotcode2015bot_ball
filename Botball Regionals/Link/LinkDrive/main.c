@@ -206,7 +206,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 		else
 		{
 			sort_sec();
-			if(mainColor = 0)
+			if(mainColor == 0)
 				area = get_object_area(1,0);
 			else
 				area = get_object_area(0,0);
