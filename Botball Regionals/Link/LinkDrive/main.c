@@ -37,7 +37,7 @@ void grab_poms(){set_servo_position(SERV_GRAB,1490);msleep(200);set_servo_positi
 void release_poms(){set_servo_position(SERV_GRAB,2047);msleep(200);}
 void bump_poms(){set_servo_position(SERV_GRAB,1510);msleep(10);set_servo_position(SERV_GRAB,1410);}
 
-void sweep_bump(){set_servo_position(SERV_SWEEP,1450);msleep(50);}
+void sweep_bump(){set_servo_position(SERV_SWEEP,1450);msleep(20);}
 void sweep_out(){set_servo_position(SERV_SWEEP,982);msleep(200);}
 void sweep_out2(){set_servo_position(SERV_SWEEP,1182);msleep(100);}
 void sweep_default(){set_servo_position(SERV_SWEEP,1750);msleep(50);}
@@ -163,11 +163,17 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			if(alt == 1)
 			{
 				bump_poms();
-				forward(2);
+				motor(MOT_RIGHT,84);
+				motor(MOT_LEFT,85);
+				//forward(2);
 				alt = 0;
 			}
 			else
+			{
 				alt = 1;
+				motor(MOT_LEFT,0);
+				motor(MOT_RIGHT,0);
+			}
 			if(jamDist>(get_motor_position_counter(MOT_PICK)-last))
 			{
 				motor(MOT_PICK,-90);
@@ -178,7 +184,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			last = get_motor_position_counter(MOT_PICK);
 			lastTest = curr_time();
 			sweep_bump();
-			msleep(50);
+			msleep(20);
 			sweep_default();
 		}
 		//actual sorting
@@ -189,7 +195,10 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			printf("Seen Blob of Main color\n");
 			if(area>=size-discrepancy&&area<=size+discrepancy)
 			{
+				motor(MOT_PICK,SORT_SPEED/4);
 				sort_main();
+				msleep(50);
+				motor(MOT_PICK,SORT_SPEED);
 				printf("sorted");
 				//motor(MOT_PICK,0);
 				//msleep(100);
@@ -205,7 +214,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 		}
 		else
 		{
-			sort_sec();
+			sort_sec();/*
 			if(mainColor == 0)
 				area = get_object_area(1,0);
 			else
@@ -221,10 +230,12 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 					//motor(MOT_PICK,SORT_SPEED);
 					printf("sorted sec");
 				}
-			}
+			}*/
 		}
 	}
 	motor(MOT_PICK,0);
+	motor(MOT_LEFT,0);
+	motor(MOT_RIGHT,0);
 }
 //side programs
 #define s_SQUAREUP 101
@@ -339,12 +350,15 @@ int main()
 			//set_servo_position(SERV_GRAB,1250);
 			//msleep(300);
 			//release_poms();
+			left (5,0);
+			forward(35);
+			right(5,0);
 			next(s_CROSSFIELD);
 		}
 		state(s_CROSSFIELD)
 		{
 			//left(4,0);
-			forward(50);
+			forward(10);
 			grab_poms();
 			motor(MOT_PICK,40);
 			forward(30);
@@ -457,6 +471,7 @@ int main()
 			sweep_out2();
 			sweep_out();
 			next(s_END);
+			now();
 		}
 		return 0;
 	}
