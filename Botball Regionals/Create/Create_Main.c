@@ -1,15 +1,8 @@
 // Created on Fri February 6 2015
 
 
-#include "createDrive.h"
-#include "generic.h"
-#include "newmenu.h"
-
 #include "botguy.h"
 
-#define RED 0	//for camera
-#define GREEN 1
-#define NOTHING 234234	//random #
 
 #define light_start_sensor 2 //random #, change later, light sensor not yet applied
 #define touch_1 14	//flipped because I flipped my code
@@ -148,7 +141,7 @@ void main()
 	
 	if (create_track_botguy() == RED) {
 		if_red();	//see botguy.h
-	{
+	}
 	else if (create_track_botguy() == GREEN) {
 		if_green();
 	}
@@ -304,6 +297,7 @@ void create_squareup_rightangle(int first_speed, int second_speed) {
 }
 
 void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGLE AWAY FROM CALDERA
+	
 	create_squareup_rightangle(100, 50);
 	
 	create_right(81, 0, 100);	//face the mesa

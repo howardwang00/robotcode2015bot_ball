@@ -5,6 +5,14 @@
 #define _FILE_H_
 
 
+#include "createDrive.h"
+#include "generic.h"
+#include "newmenu.h"
+
+#define RED 0	//for camera
+#define GREEN 1
+#define NOTHING 234234	//random #
+
 
 
 int create_track_botguy()
@@ -35,13 +43,54 @@ int create_track_botguy()
 
 void if_red() {
 	
-}
-
-void if_green() {
+	printf("Now delivering botgal to base!\n");
+	
+	//drive to base and drop botgal down
+	create_left(75, 0, 100);
+	create_backward(200, 150);
+	create_left(50, 0, 100);
+	create_end_function();
+	
+	create_arm_drive();
+	set_servo_position(claw_servo, claw_open_regular);
+	
+	create_right(50, 0, 100);
+	create_end_function();
+	
+	bulldoze();
 	
 }
 
+
+void if_green() {
+	
+	printf("Now delivering botpod to mineral analysis area!");
+	
+	// square up first
+	
+	create_left(75, 0, 100);
+	create_backward(200, 150);
+	
+	create_squareup_wall(50);
+	create_end_function();
+	
+	//now going to other side
+	
+}
+
+
 void backup() {
+	
+	printf("Oh no, didn't find botguy, now running bulldoze. :(");
+	
+	
+	create_left(75, 0, 100);
+	
+	create_arm_drive();
+	
+	create_backward(200, 150);
+	
+	bulldoze();
 	
 }
 
