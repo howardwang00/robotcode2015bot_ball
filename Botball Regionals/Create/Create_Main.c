@@ -5,6 +5,8 @@
 #include "generic.h"
 #include "newmenu.h"
 
+#include "botguy.h"
+
 #define RED 0	//for camera
 #define GREEN 1
 #define NOTHING 234234	//random #
@@ -58,9 +60,9 @@ void create_squareup_wall(int power);
 
 void create_arm_drive();
 
-int create_track_botguy();
-
 void create_squareup_rightangle(int first_speed, int second_speed);
+
+void bulldoze();
 
 /** ======================================================= STATE MENU ===================================================== **/
 
@@ -81,7 +83,7 @@ struct menuitem menu[]= {
 
 /** ===================================================== END STATE MENU ===================================================== **/
 
-//#define MAIN
+#define MAIN
 #ifdef MAIN
 void main()
 {
@@ -139,9 +141,26 @@ void main()
 	create_forward(50, 50);
 	create_end_function();
 	
-	set_servo_position(main_arm_pusher, pusher_shove);
+	set_servo_position(main_arm_pusher, pusher_shove);	//now have botguy
 	
 	msleep(2000);
+	
+	
+	if (create_track_botguy() == RED) {
+		if_red();	//see botguy.h
+	{
+	else if (create_track_botguy() == GREEN) {
+		if_green();
+	}
+	else if (create_track_botguy() == NOTHING) {
+		backup();
+	}
+	else {
+		backup();
+	}
+	
+	
+	msleep(3000);
 	
 	end_program();
 }
@@ -157,69 +176,13 @@ void main()
 	set_servo_position(claw_servo, claw_open_regular);
 	start_function(light_start_sensor);
 	
-	create_squareup_rightangle(100, 50);
-	
-	create_right(81, 0, 100);	//face the mesa
-	
-	set_servo_position(claw_servo, claw_hold_cubes);	//so it doesn't hit the mesa
-	msleep(100);
-	
-	//for momentum, so that the arm will have more time to accelerate
-	set_servo_position(main_arm_pusher, pusher_down);
-	create_arm(main_arm_down_servo_1);
-	msleep(500);
-	
-	set_servo_position(main_arm_pusher, pusher_shove);
-	create_arm(main_arm_up_servo_1 - 100);
-	msleep(1000);
-	
-	create_drive_direct_dist(-200, -200, -750);	//go to mesa
-	create_drive_direct_dist(-100, -100, -120);
-	create_right(96, 0, 100);
-	create_end_function();
-	msleep(500);
-	
-	create_arm(main_arm_mesa_behind + 100);
-	msleep(100);
-	set_servo_position(main_arm_pusher, pusher_hold);	//go back
-	set_servo_position(claw_servo, claw_sweep);
-	printf("Ready to Sweep!");
-	msleep(300);
-	
-	create_backward(50, 50);
-	msleep(100);
-	create_arm(main_arm_mesa_behind);
-	create_backward(500, 50);
-	create_end_function();
-	
-	create_forward(500, 100);
-	create_end_function();
-	
-	create_arm(main_arm_mesa_forward - 200);
-	msleep(1000);
-	create_arm(main_arm_mesa_forward);
-	msleep(100);
-	
-	create_backward(200, 75);
-	create_end_function();
-	
-	set_servo_position(claw_servo, claw_open_regular - 50);	//push stuff into claw range
-	msleep(500);
-	set_servo_position(claw_servo, claw_sweep);
-	
-	create_right(3, 0, 10);
-	create_backward(270, 50);
-	create_end_function();
-	
-	set_servo_position(claw_servo, claw_open_regular);	//push stuff in
-	msleep(1000);
-	set_servo_position(claw_servo, claw_sweep);
+	bulldoze();
 	
 	end_program();
 }
 #endif
 
-#define BOTGUY_TRACK
+//#define BOTGUY_TRACK
 #ifdef BOTGUY_TRACK
 void main() {
 	set_servo_position(main_arm_pusher, pusher_behind);	//push the arm up and keep it there
@@ -325,32 +288,6 @@ void create_arm_drive() {
 	create_arm(main_arm_drive);
 }
 
-int create_track_botguy()
-{
-	int area;
-	float time = curr_time();
-	while(time + 3 > curr_time())
-	{
-		printf("Before Camera Update");
-		camera_update();
-		printf("After Camera Update");
-		area = get_object_area(RED,0);
-		if (area > 500)
-		{
-			printf("Seen Blob of Red color\n");
-			return RED;
-		}
-		area = get_object_area(GREEN,0);
-		if (area > 500)
-		{
-			printf("Seen Blob of Green color\n");
-			return GREEN;
-		}
-	}
-	printf("Saw nothing :(((((((( !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-	return NOTHING;
-}
-
 void create_squareup_rightangle(int first_speed, int second_speed) {
 	//squaring up
 	create_squareup_wall(first_speed);
@@ -365,3 +302,65 @@ void create_squareup_rightangle(int first_speed, int second_speed) {
 	
 	create_drive_direct_dist(100, 100, 10);
 }
+
+void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGLE AWAY FROM CALDERA
+	create_squareup_rightangle(100, 50);
+	
+	create_right(81, 0, 100);	//face the mesa
+	
+	set_servo_position(claw_servo, claw_hold_cubes);	//so it doesn't hit the mesa
+	msleep(100);
+	
+	//for momentum, so that the arm will have more time to accelerate
+	set_servo_position(main_arm_pusher, pusher_down);
+	create_arm(main_arm_down_servo_1);
+	msleep(500);
+	
+	set_servo_position(main_arm_pusher, pusher_shove);
+	create_arm(main_arm_up_servo_1 - 100);
+	msleep(1000);
+	
+	create_drive_direct_dist(-200, -200, -750);	//go to mesa
+	create_drive_direct_dist(-100, -100, -120);
+	create_right(96, 0, 100);
+	create_end_function();
+	msleep(500);
+	
+	create_arm(main_arm_mesa_behind + 100);
+	msleep(100);
+	set_servo_position(main_arm_pusher, pusher_hold);	//go back
+	set_servo_position(claw_servo, claw_sweep);
+	printf("Ready to Sweep!");
+	msleep(300);
+	
+	create_backward(50, 50);
+	msleep(100);
+	create_arm(main_arm_mesa_behind);
+	create_backward(500, 50);
+	create_end_function();
+	
+	create_forward(500, 100);
+	create_end_function();
+	
+	create_arm(main_arm_mesa_forward - 200);
+	msleep(1000);
+	create_arm(main_arm_mesa_forward);
+	msleep(100);
+	
+	create_backward(200, 75);
+	create_end_function();
+	
+	set_servo_position(claw_servo, claw_open_regular - 50);	//push stuff into claw range
+	msleep(500);
+	set_servo_position(claw_servo, claw_sweep);
+	
+	create_right(3, 0, 10);
+	create_backward(270, 50);
+	create_end_function();
+	
+	set_servo_position(claw_servo, claw_open_regular);	//push stuff in
+	msleep(1000);
+	set_servo_position(claw_servo, claw_sweep);
+}
+
+
