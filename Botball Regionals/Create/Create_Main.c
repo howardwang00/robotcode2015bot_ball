@@ -7,7 +7,7 @@
 
 #define RED 0	//for camera
 #define GREEN 1
-#define NOTHING 234234234	//random #
+#define NOTHING 234234	//random #
 
 #define light_start_sensor 2 //random #, change later, light sensor not yet applied
 #define touch_1 14	//flipped because I flipped my code
@@ -242,10 +242,13 @@ void main() {
 
 
 void start_function(int light_start_port) {
-	//light_start(light_start_port_or_function_start);
+	//light_start(light_start_port);
 	shut_down_in(119); // Time is 120 seconds, but it needs to shut down a bit earlier
 	enable_servos();
 	create_connect();
+	printf("Connected to Create\n");
+	camera_open(LOW_RES);
+	printf("Connected to Camera\n");
 }
 
 void end_program() {
@@ -328,7 +331,9 @@ int create_track_botguy()
 	float time = curr_time();
 	while(time + 3 > curr_time())
 	{
+		printf("Before Camera Update");
 		camera_update();
+		printf("After Camera Update");
 		area = get_object_area(RED,0);
 		if (area > 500)
 		{
@@ -341,10 +346,9 @@ int create_track_botguy()
 			printf("Seen Blob of Green color\n");
 			return GREEN;
 		}
-		
-		printf("Saw nothing :(((((((( !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		return NOTHING;
 	}
+	printf("Saw nothing :(((((((( !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+	return NOTHING;
 }
 
 void create_squareup_rightangle(int first_speed, int second_speed) {
