@@ -1,16 +1,10 @@
 // Created on Sat April 11 2015
 
 // Replace FILE with your file's name
-#ifndef _FILE_H_
-#define _FILE_H_
+#ifndef _botguy_H_
+#define _botguy_H_
 
-#include "createDrive.h"
-#include "generic.h"
-#include "newmenu.h"
-
-#define RED 0	//for camera
-#define GREEN 1
-#define NOTHING 234234	//random #
+#include "createMove.h"
 
 
 
@@ -21,6 +15,9 @@ int create_track_botguy()
 	while(time + 3 > curr_time())
 	{
 		printf("Before Camera Update");
+		camera_update();
+		camera_update();
+		camera_update();
 		camera_update();
 		printf("After Camera Update");
 		area = get_object_area(RED,0);
@@ -45,6 +42,10 @@ void if_red() {
 	printf("Now delivering botgal to base!\n");
 	
 	//drive to base and drop botgal down
+	
+	set_servo_position(main_arm_pusher, pusher_shove);	//push the arm up and keep it there
+	create_arm(main_arm_up_servo_1);
+	
 	create_left(75, 0, 100);
 	create_backward(200, 150);
 	create_left(50, 0, 100);
@@ -67,7 +68,10 @@ void if_green() {
 	
 	// square up first
 	
-	create_left(75, 0, 100);
+	set_servo_position(main_arm_pusher, pusher_shove);	//push the arm up and keep it there
+	create_arm(main_arm_up_servo_1);
+	
+	create_left(150, 0, 100);
 	create_backward(200, 150);
 	
 	create_squareup_wall(50);
@@ -92,12 +96,15 @@ void backup() {
 	
 	printf("Oh no, didn't find botguy, now running bulldoze. :(");
 	
+	set_servo_position(main_arm_pusher, pusher_shove);	//push the arm up and keep it there
+	create_arm(main_arm_up_servo_1);
 	
 	create_left(75, 0, 100);
+	create_backward(200, 150);
+	create_left(90, 0, 100);
+	create_end_function();
 	
 	create_arm_drive();
-	
-	create_backward(200, 150);
 	
 	bulldoze();
 	
