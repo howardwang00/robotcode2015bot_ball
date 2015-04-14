@@ -4,7 +4,6 @@
 #ifndef _FILE_H_
 #define _FILE_H_
 
-
 #include "createDrive.h"
 #include "generic.h"
 #include "newmenu.h"
@@ -73,8 +72,18 @@ void if_green() {
 	
 	create_squareup_wall(50);
 	create_end_function();
+	create_arm_drive();
 	
+	create_forward(1000, 150);
+	create_end_function();
+	
+	set_servo_position(claw_servo, claw_open_regular);
 	//now going to other side
+	
+	create_left(180, 0, 100);
+	create_forward(900, 150);
+	
+	bulldoze();
 	
 }
 

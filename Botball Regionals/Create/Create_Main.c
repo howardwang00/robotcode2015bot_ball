@@ -35,6 +35,10 @@
 #define claw_sweep 1350
 
 
+
+
+
+
 void start_function(int light_start_port_for_function_start); //function to start the robot
 
 void end_program();
@@ -56,6 +60,9 @@ void create_arm_drive();
 void create_squareup_rightangle(int first_speed, int second_speed);
 
 void bulldoze();
+
+
+
 
 /** ======================================================= STATE MENU ===================================================== **/
 
@@ -192,6 +199,12 @@ void main() {
 	end_program();
 }
 #endif
+
+
+
+
+
+
 
 /** =====================================================			FUNCTIONS			==================================================== **/
 
@@ -356,5 +369,6 @@ void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGL
 	msleep(1000);
 	set_servo_position(claw_servo, claw_sweep);
 }
+
 
 
