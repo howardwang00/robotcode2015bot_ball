@@ -72,19 +72,23 @@ void if_green() {
 	create_arm(main_arm_up_servo_1);
 	
 	create_left(150, 0, 100);
-	create_backward(200, 150);
+	create_backward(450, 200);
 	
 	create_squareup_wall(50);
 	create_end_function();
 	create_arm_drive();
 	
 	create_forward(1000, 150);
+	create_right(180, 0, 100);	// turn to face right side of mineral analysis area to not mess up the Link
+	create_backward(700, 150);
 	create_end_function();
+	msleep(100);
 	
 	set_servo_position(claw_servo, claw_open_regular);
+	
 	//now going to other side
 	
-	create_left(180, 0, 100);
+	create_left(220, 0, 100);
 	create_forward(900, 150);
 	
 	bulldoze();

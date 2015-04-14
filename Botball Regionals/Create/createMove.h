@@ -25,11 +25,11 @@
 #define claw_servo 0
 
 
-#define main_arm_up_servo_1 900
+#define main_arm_up_servo_1 850
 #define main_arm_mesa_forward 1200	//on top of mesa bulldozing in front
-#define main_arm_mesa_behind 625	//on top of mesa bulldozing behind
-#define main_arm_down_servo_1 1525	//picking up cubes 
-#define main_arm_drive 1375
+#define main_arm_mesa_behind 600	//on top of mesa bulldozing behind
+#define main_arm_down_servo_1 1475	//picking up cubes 
+#define main_arm_drive 1300
 //#define main_arm_up_servo_2 
 //#define main_arm_mid_servo_2 
 //#define main_arm_down_servo_2 
