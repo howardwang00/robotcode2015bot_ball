@@ -63,15 +63,15 @@ void sweep_default(){set_servo_position(SERV_SWEEP,1750);msleep(50);}
 //void bump_poms()
 //{
 	/*set_servo_position(SERV_GRAB,1500);
-	msleep(200);*/
-	//set_servo_position(SERV_GRAB,800);
-	//msleep(200);
+msleep(200);*/
+//set_servo_position(SERV_GRAB,800);
+//msleep(200);
 	/*motor(MOT_LEFT,50);
 	motor(MOT_RIGHT,50);
 	clear_all_drive();
 	WAIT(5*CMtoBEMF<=gmpc(MOT_RIGHT)&&5*CMtoBEMF<=gmpc(MOT_LEFT))
 	motor(MOT_RIGHT,0);
-	motor(MOT_LEFT,0);*/
+motor(MOT_LEFT,0);*/
 //}
 
 //Currently not in use. No touch sensors to use with.
@@ -150,21 +150,68 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 	//camera sorting initialization
 	multicamupdate(5);
 	float startTime = curr_time();
+	int leftPos, rightPos;
+	float newTime = curr_time();
 	int area = 0;
 	int last = get_motor_position_counter(MOT_PICK);
 	int alt = 0;
 	motor(MOT_PICK,SORT_SPEED);
 	//Sorting process
+	
+	
+	motor(MOT_RIGHT,71);
+	motor(MOT_LEFT,71);
+	leftPos = gmpc(MOT_LEFT);
+	rightPos = gmpc(MOT_RIGHT);
 	while(startTime+time>=curr_time())	//Timekeeper
 	{
+		if((gmpc(MOT_LEFT)-leftPos)/CMtoBEMF>=1&&(gmpc(MOT_RIGHT)-rightPos)/CMtoBEMF>=1) // sketch
+		{
+			printf("newTime:%d\n",newTime);
+			printf("curr time:%d\n",curr_time());
+			if(newTime+2 < curr_time())
+			{
+				motor(MOT_RIGHT,35.5);
+				motor(MOT_LEFT,35);
+				
+				newTime = curr_time();
+				leftPos=gmpc(MOT_LEFT);
+				rightPos=gmpc(MOT_RIGHT);
+			}
+		}
+		else
+		{
+			if((gmpc(MOT_LEFT)-leftPos)/CMtoBEMF>=2)
+			{
+				motor(MOT_LEFT,0);
+			}
+			else
+			{
+				newTime = curr_time();
+			}
+			if((gmpc(MOT_RIGHT)-rightPos)/CMtoBEMF>=2)
+			{
+				motor(MOT_RIGHT,0);
+			}
+			else
+			{
+				newTime=curr_time();
+			}
+			printf("gmpc: Mot_left-leftPos = %d",(gmpc(MOT_LEFT)-leftPos)/CMtoBEMF);
+			printf("gmpc: Mot_right-rightPos = %d",(gmpc(MOT_RIGHT)-rightPos)/CMtoBEMF);
+			
+		}
+		
+		
+		//leftPos = get_motor_position(MOT_LEFT);
+		//rightPos = get_motor_position(MOT_RIGHT);
 		//failsafe
 		if(lastTest+1<=curr_time())
 		{
+			
 			if(alt == 1)
 			{
-				bump_poms();
-				motor(MOT_RIGHT,84);
-				motor(MOT_LEFT,85);
+				//bump_poms();
 				//forward(2);
 				alt = 0;
 			}
@@ -216,20 +263,20 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 		{
 			sort_sec();/*
 			if(mainColor == 0)
-				area = get_object_area(1,0);
+			area = get_object_area(1,0);
 			else
-				area = get_object_area(0,0);
+			area = get_object_area(0,0);
 			if(area>500)
 			{
-				printf("Seen blob of secondary color\n");
-				if(area>=size-discrepancy&&area<=size+discrepancy)
-				{
-					//msleep(50);
-					//motor(MOT_PICK,0);
-					//msleep(200);
-					//motor(MOT_PICK,SORT_SPEED);
-					printf("sorted sec");
-				}
+			printf("Seen blob of secondary color\n");
+			if(area>=size-discrepancy&&area<=size+discrepancy)
+			{
+			//msleep(50);
+			//motor(MOT_PICK,0);
+			//msleep(200);
+			//motor(MOT_PICK,SORT_SPEED);
+			printf("sorted sec");
+			}
 			}*/
 		}
 	}
