@@ -12,7 +12,7 @@
 
 #define SPD 100//turning
 #define SPDl 85.//left forward
-#define SPDr 84.//right forward
+#define SPDr 83.//right forward
 #define rdistmult 1.0
 #define SPDlb 100.//left backward
 #define SPDrb 100.//right backward

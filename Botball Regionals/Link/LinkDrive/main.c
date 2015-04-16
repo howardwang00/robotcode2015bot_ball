@@ -171,8 +171,8 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			printf("curr time:%d\n",curr_time());
 			if(newTime+2 < curr_time())
 			{
-				motor(MOT_RIGHT,35.5);
-				motor(MOT_LEFT,35);
+				motor(MOT_RIGHT,50);
+				motor(MOT_LEFT,49);
 				
 				newTime = curr_time();
 				leftPos=gmpc(MOT_LEFT);
@@ -386,6 +386,7 @@ int main()
 		}
 		state(s_START) // start, cross field, then pile1 and pile2, returnfield, dumpPoms and end
 		{
+			light_start(0);
 			shut_down_in(119);
 			release_poms();
 			motor(MOT_LEFT,-70);
@@ -393,17 +394,20 @@ int main()
 			msleep(1000);
 			//motor(MOT_RIGHT,0);
 			//motor(MOT_LEFT,0);
-			forward(6);
+			forward(20);
 			//set_servo_position(SERV_GRAB,1250);
 			//msleep(300);
 			//release_poms();
-			left (5,0);
-			forward(35);
-			right(5,0);
+			left(6,0);
+			forward(15);
+			right(8,0);
+			forward(15);
+			printf("end of Crossfield");
 			next(s_CROSSFIELD);
 		}
 		state(s_CROSSFIELD)
 		{
+			printf("start of Crossfield");
 			//left(4,0);
 			forward(10);
 			grab_poms();
