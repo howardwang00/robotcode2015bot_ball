@@ -399,9 +399,9 @@ int main()
 			//msleep(300);
 			//release_poms();
 			left(6,0);
-			forward(15);
+			forward(12);
 			right(8,0);
-			forward(15);
+			forward(18);
 			printf("end of Crossfield");
 			next(s_CROSSFIELD);
 		}
