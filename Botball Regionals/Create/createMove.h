@@ -15,7 +15,7 @@
 
 
 
-#define light_start_sensor 2 //random #, change later, light sensor not yet applied
+#define light_start_sensor 0
 #define touch_1 14	//flipped because I flipped my code
 #define touch_2 15
 
@@ -25,19 +25,18 @@
 #define claw_servo 0
 
 
-#define main_arm_up_servo_1 850
+#define main_arm_up_servo_1 860
 #define main_arm_mesa_forward 1200	//on top of mesa bulldozing in front
 #define main_arm_mesa_behind 600	//on top of mesa bulldozing behind
 #define main_arm_down_servo_1 1475	//picking up cubes 
-#define main_arm_drive 1300
+#define main_arm_drive 1250
 //#define main_arm_up_servo_2 
 //#define main_arm_mid_servo_2 
 //#define main_arm_down_servo_2 
 
 #define pusher_down 0
-#define pusher_push 725
 #define pusher_shove 1225 //pushing arm all the way up
-#define pusher_hold 625 // holding up arm while driving
+#define pusher_hold 650 // holding up arm while driving
 #define pusher_behind 1400	//push the arm all the way back so it can lift botguy
 
 #define claw_hold_cubes 475
@@ -152,7 +151,7 @@ void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGL
 	
 	create_squareup_rightangle(100, 50);
 	
-	create_right(81, 0, 100);	//face the mesa
+	create_right(80, 0, 100);	//face the mesa
 	
 	set_servo_position(claw_servo, claw_hold_cubes);	//so it doesn't hit the mesa
 	msleep(100);
@@ -168,7 +167,7 @@ void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGL
 	
 	create_drive_direct_dist(-200, -200, -750);	//go to mesa
 	create_drive_direct_dist(-100, -100, -120);
-	create_right(96, 0, 100);
+	create_right(98, 0, 100);
 	create_end_function();
 	msleep(500);
 	

@@ -35,15 +35,13 @@ void main()
 	set_servo_position(main_arm_pusher, pusher_down + 600);	//help push the arm up
 	start_function(light_start_sensor);
 	
-	
-	msleep(100);
-	create_drive_direct_dist(-10, -10, -5);	//get off the wall
+	create_drive_direct_dist(-10, -10, -10);	//get off the wall
 	create_end_function();
 	
 	set_servo_position(claw_servo, claw_open_regular + 200);
 	msleep(500);
 
-	create_left(31, 0, 75); //turn to face cubes
+	create_left(31, 0, 100); //turn to face cubes
 	create_end_function();
 	msleep(1000);
 	
@@ -53,11 +51,11 @@ void main()
 	set_servo_position(claw_servo, claw_hold_cubes);
 	msleep(800);
 	set_servo_position(main_arm_pusher, pusher_shove);
-	create_arm(main_arm_up_servo_1 - 50);
+	create_arm(main_arm_up_servo_1 - 55);
 	msleep(500);
 	
 	create_left(25, 0, 30);	//turn to face mesa to drop cubes next to mesa
-	create_drive_direct_dist(-150, -150, -700);	//drive to mesa
+	create_drive_direct_dist(-200, -200, -700);	//drive to mesa
 	create_drive_direct_dist(-50, -50, -125);	//go slower
 	create_end_function();
 	msleep(100);
@@ -65,8 +63,8 @@ void main()
 	set_servo_position(claw_servo, claw_open_regular);
 	msleep(500);
 	create_arm(main_arm_mesa_behind);	//so we won't hit botgal/pod
-	create_left(47, 0, 75); //face botgal/pod
-	create_backward(100, 75);	//get close to botguy
+	create_left(47, 0, 100); //face botgal/pod
+	create_backward(100, 150);	//get close to botguy
 	create_end_function();
 	
 	//arm go up to botguy
@@ -82,7 +80,7 @@ void main()
 	create_arm(main_arm_mesa_behind);
 	msleep(500);
 	
-	create_forward(50, 100);
+	create_forward(50, 150);
 	create_end_function();
 	
 	set_servo_position(main_arm_pusher, pusher_shove);	//now have botguy

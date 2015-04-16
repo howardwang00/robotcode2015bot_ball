@@ -5,7 +5,7 @@ void create_write_int(int integer)
 {
 	create_write_byte(get_high_byte2(integer));
 	create_write_byte(get_low_byte2(integer));
-	printf("High byte:%d Low byte: %d\n",get_high_byte2(integer),get_low_byte2(integer));
+	//printf("High byte:%d Low byte: %d\n",get_high_byte2(integer),get_low_byte2(integer));
 	
 }
 
@@ -73,9 +73,9 @@ void create_right(int angle, int radius, int speed)
 void create_left(int angle, int radius, int speed)
 {
 	create_write_byte(137);
-	printf("Speed bytes:\n");
+	//printf("Speed bytes:\n");
 	create_write_int(speed);
-	printf("Radius bytes:\n");
+	//printf("Radius bytes:\n");
 	if (radius == 0){
 		create_write_int(1);
 	}else{
