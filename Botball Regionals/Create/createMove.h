@@ -49,7 +49,7 @@
 /** =====================================================			FUNCTIONS			==================================================== **/
 
 void start_function(int light_start_port) {
-	//light_start(light_start_port);
+	light_start(light_start_port);
 	shut_down_in(119); // Time is 120 seconds, but it needs to shut down a bit earlier
 	enable_servos();
 	create_connect();
@@ -167,7 +167,7 @@ void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGL
 	
 	create_drive_direct_dist(-200, -200, -750);	//go to mesa
 	create_drive_direct_dist(-100, -100, -120);
-	create_right(98, 0, 100);
+	create_right(105, 0, 100);
 	create_end_function();
 	msleep(500);
 	
@@ -181,10 +181,10 @@ void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGL
 	create_backward(50, 50);
 	msleep(100);
 	create_arm(main_arm_mesa_behind);
-	create_backward(500, 50);
+	create_backward(500, 100);
 	create_end_function();
 	
-	create_forward(500, 100);
+	create_forward(500, 150);
 	create_end_function();
 	
 	create_arm(main_arm_mesa_forward - 200);

@@ -78,8 +78,11 @@ void if_green() {
 	create_backward(550, 200);
 	create_end_function();
 	
-	create_squareup_wall(50);
+	create_squareup_wall(75);
 	create_end_function();
+	set_servo_position(main_arm_pusher, pusher_hold);
+	create_arm(main_arm_mesa_forward + 200);
+	msleep(400);
 	create_arm_drive();
 	
 	create_forward(1000, 300);
@@ -92,8 +95,8 @@ void if_green() {
 	
 	//now going to other side
 	
-	create_forward(1200, 200);
-	create_right(180, 0, 150);
+	create_forward(1250, 200);
+	create_right(160, 0, 150);
 	create_end_function();
 	
 	
