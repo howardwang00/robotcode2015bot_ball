@@ -520,8 +520,8 @@ int main()
 			forward(160);
 			release_poms();
 			forward(20);
-			backward(10);
-			left(-88,ks/2);
+			//backward(10);
+			//left(-88,ks/2);
 			//right(88,0);
 			next(s_DUMPPOMS);
 		}
