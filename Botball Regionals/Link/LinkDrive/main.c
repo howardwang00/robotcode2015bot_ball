@@ -30,7 +30,7 @@ Value:
 
 //Position functions
 void sort_main(){set_servo_position(SERV_SORT,600);msleep(200);}
-void sort_sec(){set_servo_position(SERV_SORT,1050);}
+void sort_sec(){set_servo_position(SERV_SORT,1100);}
 //void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
 
 void grab_poms(){set_servo_position(SERV_GRAB,1490);msleep(200);set_servo_position(SERV_GRAB,1410);}
@@ -38,7 +38,7 @@ void release_poms(){set_servo_position(SERV_GRAB,2047);msleep(200);}
 void bump_poms(){set_servo_position(SERV_GRAB,1510);msleep(10);set_servo_position(SERV_GRAB,1410);}
 
 void sweep_bump(){set_servo_position(SERV_SWEEP,1450);msleep(20);}
-void sweep_out(){set_servo_position(SERV_SWEEP,982);msleep(200);}
+void sweep_out(){set_servo_position(SERV_SWEEP,293);msleep(200);}
 void sweep_out2(){set_servo_position(SERV_SWEEP,1182);msleep(100);}
 void sweep_default(){set_servo_position(SERV_SWEEP,1750);msleep(50);}
 /*void slow_servo(int servo,int pos)
@@ -116,7 +116,8 @@ time: the duration for which this program runs, in seconds.
 void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 {
 	motor(MOT_PICK,-SORT_SPEED);
-	msleep(500);
+	msleep(800);
+	release_poms();
 	//initialization process
 	if(size<0||size>100) 
 	printf("Warning: Size is out of the specified range!\n");
@@ -165,14 +166,16 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 	rightPos = gmpc(MOT_RIGHT);
 	while(startTime+time>=curr_time())	//Timekeeper
 	{
-		if((gmpc(MOT_LEFT)-leftPos)/CMtoBEMF>=1&&(gmpc(MOT_RIGHT)-rightPos)/CMtoBEMF>=1) // sketch
+		if((double)(gmpc(MOT_LEFT)-leftPos)/CMtoBEMF>=.75&&(double)(gmpc(MOT_RIGHT)-rightPos)/CMtoBEMF>=.75) // sketch
 		{
 			printf("newTime:%d\n",newTime);
 			printf("curr time:%d\n",curr_time());
-			if(newTime+2 < curr_time())
+			motor(MOT_RIGHT,0);
+			motor(MOT_LEFT,0);
+			if(newTime+2 <= curr_time())
 			{
-				motor(MOT_RIGHT,50);
-				motor(MOT_LEFT,49);
+				motor(MOT_RIGHT,71);
+				motor(MOT_LEFT,71);
 				
 				newTime = curr_time();
 				leftPos=gmpc(MOT_LEFT);
@@ -181,7 +184,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 		}
 		else
 		{
-			if((gmpc(MOT_LEFT)-leftPos)/CMtoBEMF>=2)
+			if((double)(gmpc(MOT_LEFT)-leftPos)/CMtoBEMF>=0.75)
 			{
 				motor(MOT_LEFT,0);
 			}
@@ -189,7 +192,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			{
 				newTime = curr_time();
 			}
-			if((gmpc(MOT_RIGHT)-rightPos)/CMtoBEMF>=2)
+			if((double)(gmpc(MOT_RIGHT)-rightPos)/CMtoBEMF>=0.75)
 			{
 				motor(MOT_RIGHT,0);
 			}
@@ -398,32 +401,37 @@ int main()
 			//set_servo_position(SERV_GRAB,1250);
 			//msleep(300);
 			//release_poms();
-			left(6,0);
-			forward(12);
-			right(8,0);
-			forward(18);
-			printf("end of Crossfield");
-			next(s_CROSSFIELD);
+			left(10,0);
+			forward(34);
+			grab_poms();
+			right(5,0);
+			//grab_poms();
+			//printf("end of Crossfield");
+			next(s_CROSSFIELD);	
 		}
 		state(s_CROSSFIELD)
 		{
-			printf("start of Crossfield");
+			//printf("start of Crossfield");
 			//left(4,0);
 			forward(10);
-			grab_poms();
+			//grab_poms();
 			motor(MOT_PICK,40);
 			forward(30);
 			motor(MOT_PICK,0);
 			//right(4,0);
 			//motor(MOT_PICK,-30);
-			forward(104);
+			forward(98);
 			next(s_PILEALT);
 		}
 		state(s_PILEALT)
 		{
 			left(176,ks/2);
+			motor(MOT_PICK,-70);
 			backward(40);
+			forward(5);
+			backward(7);
 			cam_sort(0,50,25,15,2);
+			grab_poms();
 			backward(30);
 			cam_sort(0,50,25,10,2);
 			left(80,0);
@@ -468,10 +476,10 @@ int main()
 			right(88,0);
 			backward(40);
 			release_poms();
-			forward(65);
+			forward(55);
 			//motor(MOT_PICK,-40);
 			grab_poms();
-			backward(80);
+			backward(70);
 			forward(20);
 			left(88,ks/2);
 			//release_poms();
@@ -505,12 +513,16 @@ int main()
 		}
 		state(s_RETURNFIELD)
 		{
-			backward(80);
+			backward(60);
 			forward(10);
 			right(67,0);
 			//backward(50);
-			forward(180);
-			right(88,0);
+			forward(160);
+			release_poms();
+			forward(20);
+			backward(10);
+			left(-88,ks/2);
+			//right(88,0);
 			next(s_DUMPPOMS);
 		}
 		state(s_DUMPPOMS)
