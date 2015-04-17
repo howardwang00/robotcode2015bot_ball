@@ -25,9 +25,9 @@
 #define claw_servo 0
 
 
-#define main_arm_up_servo_1 860
+#define main_arm_up_servo_1 850
 #define main_arm_mesa_forward 1200	//on top of mesa bulldozing in front
-#define main_arm_mesa_behind 600	//on top of mesa bulldozing behind
+#define main_arm_mesa_behind 575	//on top of mesa bulldozing behind
 #define main_arm_down_servo_1 1475	//picking up cubes 
 #define main_arm_drive 1250
 //#define main_arm_up_servo_2 
@@ -36,7 +36,7 @@
 
 #define pusher_down 0
 #define pusher_shove 1225 //pushing arm all the way up
-#define pusher_hold 650 // holding up arm while driving
+#define pusher_hold 675 // holding up arm while driving
 #define pusher_behind 1400	//push the arm all the way back so it can lift botguy
 
 #define claw_hold_cubes 475
@@ -150,6 +150,8 @@ void create_squareup_rightangle(int first_speed, int second_speed) {
 void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGLE AWAY FROM CALDERA
 	
 	create_squareup_rightangle(100, 50);
+	create_end_function();
+	set_servo_position(claw_servo, claw_open_regular);	//drop botguy/pod if it's still there so the program doesn't screw up
 	
 	create_right(80, 0, 100);	//face the mesa
 	
@@ -178,34 +180,50 @@ void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGL
 	printf("Ready to Sweep!");
 	msleep(300);
 	
-	create_backward(50, 50);
+	create_backward(50, 100);
 	msleep(100);
 	create_arm(main_arm_mesa_behind);
-	create_backward(500, 100);
+	create_backward(500, 75);	//bulldoze with arm behind
 	create_end_function();
 	
-	create_forward(500, 150);
+	create_forward(500, 200);	//go back
 	create_end_function();
 	
 	create_arm(main_arm_mesa_forward - 200);
-	msleep(1000);
-	create_arm(main_arm_mesa_forward);
+	msleep(700);
+	create_arm(main_arm_mesa_forward);	//prepare to sweep
 	msleep(100);
 	
-	create_backward(200, 75);
+	create_backward(200, 100);
 	create_end_function();
 	
 	set_servo_position(claw_servo, claw_open_regular - 50);	//push stuff into claw range
 	msleep(500);
 	set_servo_position(claw_servo, claw_sweep);
 	
-	create_right(3, 0, 10);
-	create_backward(270, 50);
+	create_backward(300, 50);
 	create_end_function();
+	msleep(100);
 	
-	set_servo_position(claw_servo, claw_open_regular);	//push stuff in
-	msleep(1000);
+	set_servo_position(claw_servo, claw_open_regular - 50);	//push stuff in
+	msleep(500);
+	create_arm(main_arm_up_servo_1);
 	set_servo_position(claw_servo, claw_sweep);
+	msleep(200);
+	create_arm(main_arm_mesa_forward - 100);	//allow us to push all the way
+	
+	create_backward(100, 50);	//drive all the way
+	create_end_function();
+	set_servo_position(claw_servo, claw_open_regular - 50);	//try to push stuff in again
+	msleep(200);
+	create_arm(main_arm_up_servo_1);
+	set_servo_position(claw_servo, claw_sweep);
+	msleep(100);
+	create_arm(main_arm_mesa_forward - 100);
+	set_servo_position(claw_servo, claw_open_regular - 50);	//push stuff in again
+	msleep(100);
+	
+	
 }
 
 

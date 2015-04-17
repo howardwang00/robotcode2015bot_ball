@@ -56,13 +56,15 @@ void main()
 	
 	create_left(25, 0, 30);	//turn to face mesa to drop cubes next to mesa
 	create_drive_direct_dist(-200, -200, -700);	//drive to mesa
-	create_drive_direct_dist(-50, -50, -125);	//go slower
+	create_drive_direct_dist(-100, -100, -125);	//go slower
 	create_end_function();
 	msleep(100);
 	
 	set_servo_position(claw_servo, claw_open_regular);
 	msleep(500);
 	create_arm(main_arm_mesa_behind);	//so we won't hit botgal/pod
+	
+	create_forward(50, 100);
 	create_left(47, 0, 100); //face botgal/pod
 	create_backward(100, 150);	//get close to botguy
 	create_end_function();
@@ -72,7 +74,7 @@ void main()
 	create_arm(main_arm_up_servo_1 - 100);
 	msleep(300);
 	create_arm(main_arm_up_servo_1);
-	msleep(500);
+	msleep(800);
 	set_servo_position(claw_servo, claw_hold_botguy);
 	msleep(500);
 	
@@ -83,9 +85,9 @@ void main()
 	create_forward(50, 150);
 	create_end_function();
 	
-	set_servo_position(main_arm_pusher, pusher_shove);	//now have botguy
+	set_servo_position(main_arm_pusher, pusher_hold);	//now have botguy
 	
-	msleep(1000);
+	msleep(500);
 	
 	
 	if (create_track_botguy() == RED) {
@@ -102,7 +104,7 @@ void main()
 	}
 	
 	
-	msleep(3000);
+	msleep(1000);
 	
 	end_program();
 }

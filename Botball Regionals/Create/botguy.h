@@ -44,6 +44,9 @@ void if_red() {
 	
 	//drive to base and drop botgal down
 	
+	create_right(70, 0, 150);
+	create_end_function();
+	
 	set_servo_position(main_arm_pusher, pusher_shove);	//push the arm up and keep it there
 	create_arm(main_arm_up_servo_1);
 	
@@ -51,9 +54,13 @@ void if_red() {
 	create_backward(100, 200);
 	create_end_function();
 	
+	set_servo_position(main_arm_pusher, pusher_hold);
+	create_arm(main_arm_mesa_forward + 200);
+	msleep(300);
 	create_arm_drive();
 	msleep(300);
 	set_servo_position(claw_servo, claw_open_regular);
+	msleep(100);
 	
 	create_right(50, 0, 100);
 	create_backward(100, 200);
@@ -109,14 +116,20 @@ void backup() {
 	
 	printf("Oh no, didn't find botguy, now running bulldoze. :(");
 	
+	create_left(30, 0, 100);
+	create_end_function();
+	
 	set_servo_position(main_arm_pusher, pusher_shove);	//push the arm up and keep it there
 	create_arm(main_arm_up_servo_1);
 	
-	create_left(65, 0, 150);
+	create_left(35, 0, 150);
 	create_backward(200, 200);
 	create_left(80, 0, 150);
 	create_backward(100, 200);
 	create_end_function();
+	
+	set_servo_position(main_arm_pusher, pusher_hold);
+	create_arm(main_arm_mesa_forward + 200);
 	
 	create_arm_drive();
 	
