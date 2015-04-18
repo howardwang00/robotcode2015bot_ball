@@ -33,8 +33,8 @@ void sort_main(){set_servo_position(SERV_SORT,600);msleep(200);}
 void sort_sec(){set_servo_position(SERV_SORT,1100);}
 //void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
 
-void grab_poms(){set_servo_position(SERV_GRAB,1490);msleep(200);set_servo_position(SERV_GRAB,1410);}
-void release_poms(){set_servo_position(SERV_GRAB,2047);msleep(200);}
+void grab_poms(){set_servo_position(SERV_GRAB,1117);msleep(200);set_servo_position(SERV_GRAB,1067);}
+void release_poms(){set_servo_position(SERV_GRAB,1658);msleep(200);}
 void bump_poms(){set_servo_position(SERV_GRAB,1510);msleep(10);set_servo_position(SERV_GRAB,1410);}
 
 void sweep_bump(){set_servo_position(SERV_SWEEP,1450);msleep(20);}
@@ -115,8 +115,6 @@ time: the duration for which this program runs, in seconds.
 */
 void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 {
-	motor(MOT_PICK,-SORT_SPEED);
-	msleep(800);
 	release_poms();
 	//initialization process
 	if(size<0||size>100) 
@@ -156,6 +154,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 	int area = 0;
 	int last = get_motor_position_counter(MOT_PICK);
 	int alt = 0;
+	int turn = 0;
 	motor(MOT_PICK,SORT_SPEED);
 	//Sorting process
 	
@@ -166,7 +165,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 	rightPos = gmpc(MOT_RIGHT);
 	while(startTime+time>=curr_time())	//Timekeeper
 	{
-		if((double)(gmpc(MOT_LEFT)-leftPos)/CMtoBEMF>=.75&&(double)(gmpc(MOT_RIGHT)-rightPos)/CMtoBEMF>=.75) // sketch
+		if((double)(gmpc(MOT_LEFT)-leftPos)/CMtoBEMF>=1&&(double)(gmpc(MOT_RIGHT)-rightPos)/CMtoBEMF>=1) // sketch
 		{
 			printf("newTime:%d\n",newTime);
 			printf("curr time:%d\n",curr_time());
@@ -174,17 +173,32 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			motor(MOT_LEFT,0);
 			if(newTime+2 <= curr_time())
 			{
-				motor(MOT_RIGHT,71);
-				motor(MOT_LEFT,71);
-				
+				if(turn==0||turn==6)
+				{
+					motor(MOT_RIGHT,71);
+					rightPos=gmpc(MOT_RIGHT);
+					turn = 1;
+				}
+				else if(turn==2)
+				{
+					motor(MOT_LEFT,71);
+					leftPos=gmpc(MOT_LEFT);
+					turn = 3;
+				}
+				else
+				{
+					motor(MOT_RIGHT,71);
+					motor(MOT_LEFT,71);
+					rightPos=gmpc(MOT_RIGHT);
+					leftPos=gmpc(MOT_LEFT);
+					turn++;
+				}
 				newTime = curr_time();
-				leftPos=gmpc(MOT_LEFT);
-				rightPos=gmpc(MOT_RIGHT);
 			}
 		}
 		else
 		{
-			if((double)(gmpc(MOT_LEFT)-leftPos)/CMtoBEMF>=0.75)
+			if((double)(gmpc(MOT_LEFT)-leftPos)/CMtoBEMF>=1)
 			{
 				motor(MOT_LEFT,0);
 			}
@@ -192,7 +206,7 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			{
 				newTime = curr_time();
 			}
-			if((double)(gmpc(MOT_RIGHT)-rightPos)/CMtoBEMF>=0.75)
+			if((double)(gmpc(MOT_RIGHT)-rightPos)/CMtoBEMF>=1)
 			{
 				motor(MOT_RIGHT,0);
 			}
@@ -221,13 +235,12 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 			else
 			{
 				alt = 1;
-				motor(MOT_LEFT,0);
-				motor(MOT_RIGHT,0);
+				//motor(MOT_LEFT,0);
+				//motor(MOT_RIGHT,0);
 			}
 			if(jamDist>(get_motor_position_counter(MOT_PICK)-last))
 			{
 				motor(MOT_PICK,-90);
-				//shake(5);
 				msleep(1000);
 				motor(MOT_PICK,SORT_SPEED);
 			}
@@ -353,7 +366,7 @@ int main()
 	camera_open(CAM_RES);
 	multicamupdate(5);
 	sweep_default();
-	set_servo_position(SERV_GRAB,929);
+	set_servo_position(SERV_GRAB,680);
 	Get_Mode();
 	while(currstate!=s_END)
 	{
@@ -404,7 +417,7 @@ int main()
 			left(10,0);
 			forward(34);
 			grab_poms();
-			right(5,0);
+			right(4,0);
 			//grab_poms();
 			//printf("end of Crossfield");
 			next(s_CROSSFIELD);	
@@ -415,7 +428,7 @@ int main()
 			//left(4,0);
 			forward(10);
 			//grab_poms();
-			motor(MOT_PICK,40);
+			//motor(MOT_PICK,40);
 			forward(30);
 			motor(MOT_PICK,0);
 			//right(4,0);
@@ -429,12 +442,19 @@ int main()
 			motor(MOT_PICK,-70);
 			backward(40);
 			forward(5);
-			backward(7);
-			cam_sort(0,50,25,15,2);
+			backward(7);	
+			motor(MOT_PICK,-SORT_SPEED);
+			msleep(600);
+			cam_sort(0,50,25,13,2);
 			grab_poms();
-			backward(30);
-			cam_sort(0,50,25,10,2);
-			left(80,0);
+			backward(23);
+			//cam_sort(0,50,25,10,2);
+			//grab_poms();
+			//backward(20);
+			forward(2);
+			cam_sort(0,50,25,12,2);
+			grab_poms();
+			left(78,0);
 			//backward(50);
 			/*
 			right(90,0);
@@ -465,6 +485,8 @@ int main()
 			//motor(MOT_LEFT,60);
 			//motor(MOT_RIGHT,63);
 			//forward(20);
+			motor(MOT_PICK,-SORT_SPEED);
+			msleep(600);
 			cam_sort(0,50,25,30,2);
 			release_poms();
 			next(s_PILE2);
@@ -472,14 +494,14 @@ int main()
 		state(s_PILE2)
 		{
 			backward(70);
-			forward(15);
-			right(88,0);
-			backward(40);
+			forward(17);
+			right(86,0);
+			backward(35);
 			release_poms();
 			forward(55);
 			//motor(MOT_PICK,-40);
 			grab_poms();
-			backward(70);
+			backward(68);
 			forward(20);
 			left(88,ks/2);
 			//release_poms();
@@ -501,6 +523,8 @@ int main()
 			left(88,ks/2);*/
 			backward(40);
 			cam_sort(0,50,25,30,2);
+			right(45,0);
+			left(45,0);
 			//forward(240);
 			/*left(135,0);
 			forward(120);
@@ -513,13 +537,13 @@ int main()
 		}
 		state(s_RETURNFIELD)
 		{
-			backward(60);
+			backward(50);
 			forward(10);
 			right(67,0);
 			//backward(50);
 			forward(160);
-			release_poms();
-			forward(20);
+			//release_poms();
+			forward(19);
 			//backward(10);
 			//left(-88,ks/2);
 			//right(88,0);
@@ -533,8 +557,10 @@ int main()
 			sweep_out();
 			sweep_out2();
 			sweep_out();
-			next(s_END);
+			msleep(1000);
 			now();
+			next(s_END);
+			//now();
 		}
 		return 0;
 	}
