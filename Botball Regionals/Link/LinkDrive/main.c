@@ -93,7 +93,6 @@ void squareup(int max_time)
 }
 /*
 shakes the robot left and right reps amount of times
-
 reps: the amount of shakes we did.
 */
 void shake(int reps)
