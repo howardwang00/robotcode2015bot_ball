@@ -44,27 +44,37 @@ void if_red() {
 	
 	//drive to base and drop botgal down
 	
-	create_right(70, 0, 150);
+	create_right(100, 0, 150);
 	create_end_function();
+	msleep(100);
 	
 	set_servo_position(main_arm_pusher, pusher_shove);	//push the arm up and keep it there
-	create_arm(main_arm_up_servo_1);
+	create_arm(main_arm_up_servo_1 - 200);
+	msleep(500);
+	create_arm(main_arm_up_servo_1 - 100);
+	msleep(500);
+	create_arm(main_arm_up_servo_1 + 50);
 	
-	create_right(100, 0, 100);
-	create_backward(100, 200);
+	create_right(70, 0, 100);
+	create_backward(150, 200);
 	create_end_function();
+	msleep(100);
 	
 	set_servo_position(main_arm_pusher, pusher_hold);
-	create_arm(main_arm_mesa_forward + 200);
-	msleep(300);
+	create_arm(main_arm_mesa_forward -300);	//slowservo
+	msleep(500);
+	create_arm(main_arm_mesa_forward - 200);
+	msleep(500);
+	create_arm(main_arm_mesa_forward - 100);
+	msleep(700);
 	create_arm_drive();
 	msleep(300);
 	set_servo_position(claw_servo, claw_open_regular);
 	msleep(100);
 	
-	create_right(50, 0, 100);
-	create_backward(100, 200);
-	create_left(30, 0, 100);
+	create_right(60, 0, 100);
+	create_backward(250, 200);
+	create_left(40, 0, 100);
 	create_end_function();
 	
 	bulldoze();
@@ -88,8 +98,13 @@ void if_green() {
 	create_squareup_wall(75);
 	create_end_function();
 	set_servo_position(main_arm_pusher, pusher_hold);
-	create_arm(main_arm_mesa_forward + 200);
-	msleep(400);
+	create_arm(main_arm_mesa_forward);
+	msleep(100);
+	set_servo_position(main_arm_pusher, pusher_hold);
+	create_arm(main_arm_mesa_forward - 200);
+	msleep(500);
+	create_arm(main_arm_mesa_forward - 100);
+	msleep(500);
 	create_arm_drive();
 	
 	create_forward(1000, 300);
@@ -129,7 +144,10 @@ void backup() {
 	create_end_function();
 	
 	set_servo_position(main_arm_pusher, pusher_hold);
-	create_arm(main_arm_mesa_forward + 200);
+	create_arm(main_arm_mesa_forward - 200);
+	msleep(300);
+	create_arm(main_arm_mesa_forward - 100);
+	msleep(300);
 	
 	create_arm_drive();
 	

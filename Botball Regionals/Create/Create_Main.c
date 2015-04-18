@@ -49,7 +49,7 @@ void main()
 	create_arm(main_arm_down_servo_1);
 	msleep(800);
 	set_servo_position(claw_servo, claw_hold_cubes);
-	msleep(800);
+	msleep(1000);
 	set_servo_position(main_arm_pusher, pusher_shove);
 	create_arm(main_arm_up_servo_1 - 55);
 	msleep(500);
@@ -64,7 +64,9 @@ void main()
 	msleep(500);
 	create_arm(main_arm_mesa_behind);	//so we won't hit botgal/pod
 	
-	create_forward(50, 100);
+	//create_forward(50, 100);
+	//create_end_function();
+	msleep(100);
 	create_left(47, 0, 100); //face botgal/pod
 	create_backward(100, 150);	//get close to botguy
 	create_end_function();
@@ -73,8 +75,8 @@ void main()
 	msleep(100);
 	create_arm(main_arm_up_servo_1 - 100);
 	msleep(300);
-	create_arm(main_arm_up_servo_1);
-	msleep(800);
+	create_arm(main_arm_up_servo_1 - 25);
+	msleep(1000);
 	set_servo_position(claw_servo, claw_hold_botguy);
 	msleep(500);
 	
@@ -82,12 +84,8 @@ void main()
 	create_arm(main_arm_mesa_behind);
 	msleep(500);
 	
-	create_forward(50, 150);
+	create_forward(50, 150);	//now have botguy
 	create_end_function();
-	
-	set_servo_position(main_arm_pusher, pusher_hold);	//now have botguy
-	
-	msleep(500);
 	
 	
 	if (create_track_botguy() == RED) {
@@ -96,11 +94,13 @@ void main()
 	else if (create_track_botguy() == GREEN) {
 		if_green();
 	}
-	else if (create_track_botguy() == NOTHING) {
-		backup();
+	else if (create_track_botguy() == NOTHING) {	//never runs this for some reason
+		//backup();
+		if_red();	//because sometimes it doesn't see botguy
 	}
 	else {
-		backup();
+		//backup();
+		if_red();
 	}
 	
 	
