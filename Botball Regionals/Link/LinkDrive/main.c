@@ -434,7 +434,8 @@ int main()
 			grab_poms();
 			backward(30);
 			cam_sort(0,50,25,10,2);
-			left(80,0);
+			//forward(5);
+			right(-80,ks/2);
 			//backward(50);
 			/*
 			right(90,0);
@@ -519,7 +520,7 @@ int main()
 			//backward(50);
 			forward(160);
 			release_poms();
-			forward(20);
+			forward(15);
 			//backward(10);
 			//left(-88,ks/2);
 			//right(88,0);
