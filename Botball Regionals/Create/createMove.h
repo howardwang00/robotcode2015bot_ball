@@ -25,7 +25,7 @@
 #define claw_servo 0
 
 
-#define main_arm_up_servo_1 775
+#define main_arm_up_servo_1 750
 #define main_arm_mesa_forward 1200	//on top of mesa bulldozing in front
 #define main_arm_mesa_behind 450	//on top of mesa bulldozing behind
 #define main_arm_down_servo_1 1400	//picking up cubes 
@@ -53,6 +53,7 @@ void start_function(int light_start_port) {
 	shut_down_in(119); // Time is 120 seconds, but it needs to shut down a bit earlier
 	enable_servos();
 	create_connect();
+	create_full();
 	printf("Connected to Create\n");
 	camera_open(LOW_RES);
 	printf("Connected to Camera\n");
@@ -168,7 +169,7 @@ void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGL
 	msleep(1000);
 	
 	create_drive_direct_dist(-200, -200, -750);	//go to mesa
-	create_drive_direct_dist(-100, -100, -125);
+	create_drive_direct_dist(-100, -100, -110);
 	create_right(100, 0, 100);
 	create_end_function();
 	msleep(500);

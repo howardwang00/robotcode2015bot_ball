@@ -49,14 +49,14 @@ void if_red() {
 	msleep(100);
 	
 	set_servo_position(main_arm_pusher, pusher_shove);	//push the arm up and keep it there
-	create_arm(main_arm_up_servo_1 - 200);
+	create_arm(main_arm_up_servo_1 - 200);	//slowservo
 	msleep(500);
 	create_arm(main_arm_up_servo_1 - 100);
 	msleep(500);
 	create_arm(main_arm_up_servo_1 + 50);
 	
 	create_right(70, 0, 100);
-	create_backward(150, 200);
+	create_backward(200, 200);
 	create_end_function();
 	msleep(100);
 	
@@ -66,9 +66,8 @@ void if_red() {
 	create_arm(main_arm_mesa_forward - 200);
 	msleep(500);
 	create_arm(main_arm_mesa_forward - 100);
-	msleep(700);
-	create_arm_drive();
 	msleep(300);
+	create_arm_drive();
 	set_servo_position(claw_servo, claw_open_regular);
 	msleep(100);
 	
