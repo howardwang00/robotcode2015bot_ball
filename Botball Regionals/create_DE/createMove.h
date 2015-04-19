@@ -25,11 +25,11 @@
 #define claw_servo 0
 
 
-#define main_arm_up_servo_1 725
-#define main_arm_mesa_forward 1175	//on top of mesa bulldozing in front
-#define main_arm_mesa_behind 425	//on top of mesa bulldozing behind
-#define main_arm_down_servo_1 1375	//picking up cubes 
-#define main_arm_drive 1200
+#define main_arm_up_servo_1 750
+#define main_arm_mesa_forward 1200	//on top of mesa bulldozing in front
+#define main_arm_mesa_behind 450	//on top of mesa bulldozing behind
+#define main_arm_down_servo_1 1400	//picking up cubes 
+#define main_arm_drive 1225
 //#define main_arm_up_servo_2 
 //#define main_arm_mid_servo_2 
 //#define main_arm_down_servo_2 
@@ -43,6 +43,7 @@
 #define claw_open_regular 700	//when the claw is not holding anything
 #define claw_hold_botguy 320	//holding botguy
 #define claw_sweep 1400
+#define claw_igus 310
 
 
 
@@ -197,12 +198,10 @@ void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGL
 	set_servo_position(claw_servo, claw_sweep);
 	msleep(300);
 	create_backward(100, 75);
-	/*
 	set_servo_position(claw_servo, claw_open_regular);	//push stuff into claw range
 	msleep(500);
 	set_servo_position(claw_servo, claw_sweep);
 	msleep(500);
-	*/
 	create_backward(200, 75);	//bulldoze with arm behind
 	create_end_function();
 	
@@ -243,7 +242,7 @@ void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGL
 	create_end_function();
 	//set_servo_position(claw_servo, claw_open_regular);	//push stuff in
 	msleep(500);
-	create_backward(40, 50);
+	create_backward(20, 50);
 	create_end_function();
 	create_arm(main_arm_up_servo_1);
 	set_servo_position(claw_servo, claw_sweep);
@@ -270,14 +269,14 @@ void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGL
 	msleep(100);
 	
 	create_arm(main_arm_mesa_behind);
-	create_forward(250, 100);	//drive back, only 250 because might hit link
+	create_forward(400, 100);	//drive back
 	create_end_function();
 	set_servo_position(claw_servo, claw_sweep);
 	create_arm(main_arm_mesa_forward - 200);
 	msleep(300);
 	create_arm(main_arm_mesa_forward);
 	msleep(100);
-	create_backward(150, 50);
+	create_backward(200, 50);
 	create_end_function();
 	create_arm(main_arm_up_servo_1);
 	msleep(100);
@@ -287,36 +286,12 @@ void bulldoze() {	// STARTS FACING AWAY FROM MESA, NEXT TO BASE, NEAR RIGHT ANGL
 	msleep(100);
 	set_servo_position(claw_servo, claw_sweep);
 	msleep(100);
-	create_backward(100, 50);
-	create_end_function();
-	create_left(5, 0, 30);
+	create_backward(200, 50);
 	create_end_function();
 	set_servo_position(claw_servo, claw_open_regular - 50);	//push stuff in again
 	msleep(100);
 	set_servo_position(claw_servo, claw_sweep);
-	msleep(300);
-	
-	create_right(4, 0, 30);
-	create_end_function();
-	
-	create_arm(main_arm_up_servo_1);
 	msleep(100);
-	
-	create_forward(100, 100);
-	create_end_function();
-	create_arm(main_arm_mesa_forward - 100);
-	msleep(100);
-	
-	create_backward(100, 50);
-	create_left(5, 0, 50);
-	create_end_function();
-	
-	set_servo_position(claw_servo, claw_open_regular - 50);	//push stuff in again
-	msleep(100);
-	set_servo_position(claw_servo, claw_sweep);
-	msleep(300);
-	
-	
 }
 
 

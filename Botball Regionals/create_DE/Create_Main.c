@@ -30,10 +30,32 @@ struct menuitem menu[]= {
 void main()
 {
 	
-	create_arm(main_arm_down_servo_1 - 25);	//to get above the cubes when turned towards them
-	set_servo_position(claw_servo, claw_open_regular + 50);
-	set_servo_position(main_arm_pusher, pusher_down + 600);	//help push the arm up
+	create_arm(main_arm_up_servo_1);	//to get above the cubes when turned towards them
+	set_servo_position(claw_servo, claw_igus);
+	set_servo_position(main_arm_pusher, pusher_shove);	//help push the arm up
 	start_function(light_start_sensor);
+	
+	
+	msleep(1000);	//wait for link to pass
+	
+	create_backward(500, 150);
+	create_end_function();
+	
+	create_squareup_wall(75);
+	create_end_function();
+	
+	set_servo_position(main_arm_pusher, pusher_down + 600);	//help push the arm up
+	create_arm(main_arm_down_servo_1 - 25);	//to get above the cubes when turned towards them
+	set_servo_position(claw_servo, claw_open_regular);
+	msleep(500);
+	
+	create_forward(600, 150);
+	create_end_function();
+	msleep(200);
+	
+	//same from here
+	
+	
 	
 	create_drive_direct_dist(-10, -10, -10);	//get off the wall
 	create_end_function();
