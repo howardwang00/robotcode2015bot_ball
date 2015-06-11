@@ -30,15 +30,15 @@ Value:
 
 //Position functions
 void sort_main(){set_servo_position(SERV_SORT,600);msleep(200);}
-void sort_sec(){set_servo_position(SERV_SORT,1100);}
+void sort_sec(){set_servo_position(SERV_SORT,1120);}
 //void sort_mid(){set_servo_position(SERV_SORT,1090);msleep(200);}
 
-void grab_poms(){set_servo_position(SERV_GRAB,1117);msleep(200);set_servo_position(SERV_GRAB,1067);}
-void release_poms(){set_servo_position(SERV_GRAB,1658);msleep(200);}
+void grab_poms(){set_servo_position(SERV_GRAB,1436);msleep(200);set_servo_position(SERV_GRAB,1483);}
+void release_poms(){set_servo_position(SERV_GRAB,2047);msleep(200);}
 void bump_poms(){set_servo_position(SERV_GRAB,1510);msleep(10);set_servo_position(SERV_GRAB,1410);}
 
-void sweep_bump(){set_servo_position(SERV_SWEEP,1450);msleep(20);}
-void sweep_out(){set_servo_position(SERV_SWEEP,293);msleep(200);}
+void sweep_bump(){set_servo_position(SERV_SWEEP,1450);msleep(40);}
+void sweep_out(){set_servo_position(SERV_SWEEP,0);msleep(200);}
 void sweep_out2(){set_servo_position(SERV_SWEEP,1182);msleep(100);}
 void sweep_default(){set_servo_position(SERV_SWEEP,1750);msleep(50);}
 /*void slow_servo(int servo,int pos)
@@ -325,6 +325,7 @@ struct menuitem menu[]=
 	{s_SQUAREUP,"squareup"},
 	{s_SWEEP,"sweep"},
 	{s_FORWARD,"forward"},
+	{s_DUMPPOMS,"dump"},
 	{s_RAWSORT,"sorting"},
 	{s_END,"END"}
 	
@@ -365,7 +366,7 @@ int main()
 	camera_open(CAM_RES);
 	multicamupdate(5);
 	sweep_default();
-	set_servo_position(SERV_GRAB,680);
+	set_servo_position(SERV_GRAB,1049);
 	Get_Mode();
 	while(currstate!=s_END)
 	{
@@ -373,6 +374,7 @@ int main()
 		{
 			release_poms();
 			forward(100);
+			backward(100);
 		}
 		state(s_SWEEP)
 		{
@@ -413,10 +415,10 @@ int main()
 			//set_servo_position(SERV_GRAB,1250);
 			//msleep(300);
 			//release_poms();
-			left(10,0);
+			left(8.5,0);
 			forward(34);
 			grab_poms();
-			right(4,0);
+			right(5.5,0);
 			//grab_poms();
 			//printf("end of Crossfield");
 			next(s_CROSSFIELD);	
@@ -437,21 +439,21 @@ int main()
 		}
 		state(s_PILEALT)
 		{
-			left(176,ks/2);
+			left(200,ks/2);
 			motor(MOT_PICK,-70);
-			backward(40);
+			backward(43);
 			forward(5);
 			backward(7);	
-			motor(MOT_PICK,-SORT_SPEED);
-			msleep(600);
-			cam_sort(0,50,25,13,2);
+			//motor(MOT_PICK,-SORT_SPEED);
+			//msleep(600);
+			cam_sort(0,50,25,12,2);
 			grab_poms();
 			backward(23);
 			//cam_sort(0,50,25,10,2);
 			//grab_poms();
 			//backward(20);
 			forward(2);
-			cam_sort(0,50,25,12,2);
+			cam_sort(0,50,25,11,2);
 			grab_poms();
 			left(78,0);
 			//backward(50);
@@ -493,7 +495,7 @@ int main()
 		state(s_PILE2)
 		{
 			backward(70);
-			forward(17);
+			forward(19);
 			right(86,0);
 			backward(35);
 			release_poms();
@@ -522,6 +524,7 @@ int main()
 			left(88,ks/2);*/
 			backward(40);
 			cam_sort(0,50,25,30,2);
+			sort_main();
 			right(45,0);
 			left(45,0);
 			//forward(240);
@@ -552,9 +555,12 @@ int main()
 		{
 			sweep_out();
 			msleep(150);
-			sweep_out2();
+			sweep_default();
+			msleep(100);
 			sweep_out();
-			sweep_out2();
+			msleep(100);
+			sweep_default();
+			msleep(100);
 			sweep_out();
 			msleep(1000);
 			now();
