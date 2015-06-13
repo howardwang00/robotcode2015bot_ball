@@ -313,13 +313,18 @@ void cam_sort(int mainColor, int size, int discrepancy, int time, int jamDist)
 #define s_RETURNFIELD 5
 #define s_DUMPPOMS 6
 #define s_PILEALT 7
+#define s_CROSSBACK 8
+#define s_SHORT 9
 
 #define s_END 0
 
 struct menuitem menu[]=
 {
 	{s_START,"start"},
+	{s_SHORT,"short"},
 	{s_CROSSFIELD,"crossfield"},
+	{s_PILEALT,"Pilealt"},
+	{s_CROSSBACK,"Crossback"},
 	{s_PILE1,"Pile 1"},
 	{s_PILE2,"Pile 2"},
 	{s_SQUAREUP,"squareup"},
@@ -361,6 +366,7 @@ void cam_display()
 }
 int main()
 {
+	int alt= 0;
 	enable_servos();
 	sort_sec();
 	camera_open(CAM_RES);
@@ -370,6 +376,11 @@ int main()
 	Get_Mode();
 	while(currstate!=s_END)
 	{
+		state(s_SHORT)
+		{
+			alt = 1;
+			next(s_START);
+		}
 		state(s_FORWARD)
 		{
 			release_poms();
@@ -415,13 +426,20 @@ int main()
 			//set_servo_position(SERV_GRAB,1250);
 			//msleep(300);
 			//release_poms();
-			left(8.5,0);
+			left(5,0);
 			forward(34);
 			grab_poms();
 			right(5.5,0);
 			//grab_poms();
 			//printf("end of Crossfield");
-			next(s_CROSSFIELD);	
+			if(alt==0)
+			{
+				next(s_CROSSFIELD);	
+			}
+			else
+			{
+				next(s_CROSSBACK);
+			}
 		}
 		state(s_CROSSFIELD)
 		{
@@ -449,13 +467,17 @@ int main()
 			cam_sort(0,50,25,12,2);
 			grab_poms();
 			backward(23);
-			//cam_sort(0,50,25,10,2);
-			//grab_poms();
-			//backward(20);
+			cam_sort(0,50,25,10,2);
+			grab_poms();
+			backward(23);
+			
+			/*
 			forward(2);
 			cam_sort(0,50,25,11,2);
 			grab_poms();
 			left(78,0);
+			*/
+			
 			//backward(50);
 			/*
 			right(90,0);
@@ -471,6 +493,15 @@ int main()
 			backward(30);
 			cam_sort(0,50,25,30,3);*/
 			next(s_PILE2);
+		}
+		state(s_CROSSBACK)
+		{
+			backward(60);
+			forward(10);
+			left(90,0);
+			backward(30);
+			cam_sort(0,50,25,12,2);
+			next(s_END);
 		}
 		state(s_PILE1)
 		{
